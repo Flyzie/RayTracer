@@ -12,6 +12,10 @@ add_executable(RayTracer main.cpp
         Math/mat3x3.h
         Math/mat4x4.cpp
         Math/mat4x4.h
+        Math/ray.cpp
+        Math/ray.h
+        Math/sphere.cpp
+        Math/sphere.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Math Utils)

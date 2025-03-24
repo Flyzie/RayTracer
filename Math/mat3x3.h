@@ -23,6 +23,7 @@ namespace math {
         mat3x3 multiply(const mat3x3 &other);
         mat3x3 multiply(float f);
         mat3x3 divide(float f);
+        mat3x3 transpose();
 
         mat3x3 cIdentity();
 

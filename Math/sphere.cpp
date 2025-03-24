@@ -17,6 +17,8 @@ sphere::sphere() {
     this->radius = 0;
 }
 
+sphere::~sphere() {}
+
 sphere::sphere(vec3 &center, float radius) {
     this->center = center;
 
@@ -34,9 +36,9 @@ sphere::sphere(const sphere &sphere) {
 
 float root(float b, float discriminant, float a) {
     if (discriminant > 0) {
-        return (-b + std::sqrt(discriminant)) / a;
+        return (-b + sqrt(discriminant)) / a;
     }else {
-        return (-b - std::sqrt(-discriminant)) / a;
+        return (-b - sqrt(-discriminant)) / a;
     }
 }
 
@@ -44,10 +46,10 @@ bool sphere::intersection(ray &ray, float t_min, float t_max) {
    vec3 oc = ray.origin.subtract(this->center);
 
     float a = ray.direction.dotProduct(ray.direction);
-    float b = 2 * oc.dotProduct(ray.direction);
+    float b = oc.dotProduct(ray.direction);
     float c = oc.dotProduct(oc) - this->radius * this->radius;
 
-    float discriminant = b * b - 4 * a * c;
+    float discriminant = b * b - a * c;
 
     // Calculate the two points of intersection
     float t1 = root(b, -discriminant, a);
@@ -56,9 +58,15 @@ bool sphere::intersection(ray &ray, float t_min, float t_max) {
     if (discriminant < 0) {
        cout << "no intersection" << endl;
     }else if (discriminant > 0) {
-        cout << "Intersection points: " << t1 << " and " << t2 <<endl;
+        vec3 hitPoint1 = ray.pointAtParameter(t1);
+        vec3 hitPoint2 = ray.pointAtParameter(t2);
+        cout << "Parameter T: " << t1 << " and " << t2 <<endl;
+        cout << "Intersection point 1: " << hitPoint1.x << " " << hitPoint1.y << " " << hitPoint1.z << endl;
+        cout << "Intersection point 2: " << hitPoint2.x << " " << hitPoint2.y << " " << hitPoint2.z << endl;
     }else {
-        cout << "Intersection point: " << t1 << endl;
+        vec3 hitPoint1 = ray.pointAtParameter(t1);
+        cout << "Parameter T: " << t1 << endl;
+        cout << "Intersection point: " << hitPoint1.x << " " << hitPoint1.y << " " << hitPoint1.z << endl;
     }
     return (t1 > t_min && t2 < t_max) || (t2 > t_min && t2 < t_max);
 }

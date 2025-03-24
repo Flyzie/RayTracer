@@ -11,6 +11,7 @@ ray::ray() {
     this->direction = vec3();
 }
 
+
 ray::ray(vec3 &origin, vec3 &direction) {
     this->origin = origin;
     this->direction = direction;
@@ -20,5 +21,7 @@ vec3 ray::pointAtParameter(float t) {
     vec3 var1 = vec3(this->origin);
     vec3 var2 = vec3(this->direction);
 
-    return var1.add(var2.multiply(t));
+    vec3 var3 = var2.multiply(t);
+
+    return var1.add(var3);
 }

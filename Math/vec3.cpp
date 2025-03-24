@@ -26,43 +26,28 @@ vec3::vec3(const vec3 &other) {
     this -> z = other.z;
 }
 
-vec3& vec3::add(vec3 &other) {
-    this -> x += other.x;
-    this -> y += other.y;
-    this -> z += other.z;
-    return *this;
-
+vec3 vec3::add(vec3 &other) {
+    return {this->x + other.x, this->y + other.y, this->z + other.z};
 }
 
-vec3& vec3::subtract(vec3 &other) {
-    this -> x -= other.x;
-    this -> y -= other.y;
-    this -> z -= other.z;
-    return *this;
+vec3 vec3::subtract(vec3 &other) {
+    return {this->x - other.x, this->y - other.y, this->z - other.z};
 }
 
-vec3& vec3::multiply(float multiplier) {
-    this -> x *= multiplier;
-    this -> y *= multiplier;
-    this -> z *= multiplier;
-    return *this;
+vec3 vec3::multiply(float multiplier) {
+    return {this->x * multiplier, this->y * multiplier, this->z * multiplier};
 }
 
-vec3& vec3::divide(float divider) {
+vec3 vec3::divide(float divider) {
     if (divider == 0.0f) {
         throw std::invalid_argument("dont divide by 0!");
     }
-
-    this->x /= divider;
-    this->y /= divider;
-    this->z /= divider;
-
-    return *this;
+    return {this->x / divider, this->y / divider, this->z / divider};
 }
 
 float vec3::length() {
-     return (float)std::sqrt(std::pow(this->x, 2) + std::pow(this->y, 2) +
-                          std::pow(this->z, 2));
+     return (float)sqrt(pow(this->x, 2) + pow(this->y, 2) +
+                          pow(this->z, 2));
 }
 
 vec3 vec3::normalize() {
@@ -72,10 +57,9 @@ vec3 vec3::normalize() {
     if (length == 0.0f) {
         throw invalid_argument("cant divide by 0");
     }
+    vec3 finalVec = n.divide(length);
 
-    n.divide(length);
-
-    return n;
+    return finalVec;
 }
 
 float vec3::dotProduct(vec3 &other) {

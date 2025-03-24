@@ -1,0 +1,22 @@
+# ninja log v6
+3	457	7645305877673218	CMakeFiles/RayTracer.dir/main.cpp.obj	6a1677e1e1bab65b
+237	380	7645329257293029	RayTracer.exe	b5677429bb45f53a
+5	236	7645329254968809	CMakeFiles/RayTracer.dir/Math/vec3.cpp.obj	eda0ed5ed8c3dfcc
+37	266	7645418898362511	CMakeFiles/RayTracer.dir/Math/mat4x4.cpp.obj	d9067111d17ba7f6
+30	272	7645418898299185	CMakeFiles/RayTracer.dir/Math/mat3x3.cpp.obj	c9a859bdffa94e20
+16	548	7645418898154525	CMakeFiles/RayTracer.dir/main.cpp.obj	d1767fea2e3a599c
+23	556	7645418898226282	CMakeFiles/RayTracer.dir/Math/vec3.cpp.obj	5f08b66a3c680a68
+556	842	7645418903552450	RayTracer.exe	ab432cc31b37a7bc
+20	416	7645420025816986	CMakeFiles/RayTracer.dir/main.cpp.obj	d1767fea2e3a599c
+417	569	7645420029783095	RayTracer.exe	ab432cc31b37a7bc
+22	416	7645420160199845	CMakeFiles/RayTracer.dir/main.cpp.obj	d1767fea2e3a599c
+416	554	7645420164131891	RayTracer.exe	ab432cc31b37a7bc
+26	122	7645421808836618	CMakeFiles/RayTracer.dir/Math/mat3x3.cpp.obj	c9a859bdffa94e20
+19	433	7645421808777137	CMakeFiles/RayTracer.dir/main.cpp.obj	d1767fea2e3a599c
+433	571	7645421812914154	RayTracer.exe	ab432cc31b37a7bc
+20	123	7645423152736669	CMakeFiles/RayTracer.dir/Math/mat3x3.cpp.obj	c9a859bdffa94e20
+123	273	7645423153767703	RayTracer.exe	ab432cc31b37a7bc
+19	107	7645423371375978	CMakeFiles/RayTracer.dir/Math/mat3x3.cpp.obj	c9a859bdffa94e20
+107	240	7645423372266893	RayTracer.exe	ab432cc31b37a7bc
+5	401	7645423523649749	CMakeFiles/RayTracer.dir/main.cpp.obj	d1767fea2e3a599c
+401	552	7645423527610114	RayTracer.exe	ab432cc31b37a7bc

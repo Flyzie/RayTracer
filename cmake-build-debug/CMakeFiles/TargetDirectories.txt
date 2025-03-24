@@ -1,3 +1,0 @@
-G:/RayTracer/cmake-build-debug/CMakeFiles/RayTracer.dir
-G:/RayTracer/cmake-build-debug/CMakeFiles/edit_cache.dir
-G:/RayTracer/cmake-build-debug/CMakeFiles/rebuild_cache.dir

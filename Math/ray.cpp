@@ -25,3 +25,5 @@ vec3 ray::pointAtParameter(float t) {
 
     return var1.add(var3);
 }
+
+ray::~ray() {}

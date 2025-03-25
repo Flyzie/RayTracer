@@ -46,8 +46,8 @@ vec3 vec3::divide(float divider) {
 }
 
 float vec3::length() {
-     return (float)sqrt(pow(this->x, 2) + pow(this->y, 2) +
-                          pow(this->z, 2));
+    return (float)sqrt(pow(this->x, 2) + pow(this->y, 2) +
+                         pow(this->z, 2));
 }
 
 vec3 vec3::normalize() {

@@ -6,6 +6,8 @@
 #include "ray.h"
 #include "sphere.h"
 #include "mat3x3.h"
+#include "triangle.h"
+#include "plane.h"
 using namespace std;
 using namespace math;
 
@@ -77,11 +79,61 @@ int main() {
     ray r3(r3o, dirr3);
     cout << "r3 przeciecie: " << endl;
     bool intersection3 = s.intersection(r3, 0, 1000);
+    cout << endl;
+    cout << "--------------------------------" << endl;
 
+    //Zadanie 12 i 13: Płaszczyzna P i przecięcie z promieniem R2
+    vec3 pPoint(0, 0, 0);
+    vec3 pNormal(0, 1, 1);
+    plane P(pPoint, pNormal);
 
+    vec3 r2Origin(0, 0, -20);
+    vec3 r2Direction(0, 1, 0);
+    ray R2(r2Origin, r2Direction);
 
+    float t_plane;
+    bool planeHit = P.intersection(R2, 0.0f, 1000.0f, t_plane);
+    if (planeHit) {
+        vec3 interPoint = R2.pointAtParameter(t_plane);
+        cout << "Punkt przeciecia plaszczyzny P z promieniem R2: "
+             << interPoint.x << ", " << interPoint.y << ", " << interPoint.z << endl;
+    } else {
+        cout << "Brak przeciecia plaszczyzny P z promieniem R2" << endl;
+    }
 
+    cout << "--------------------------------" << endl;
 
+    //Zadanie 15: Sprawdzenie przecięcia linii z trójkątem
+    vec3 A(0, 0, 0);
+    vec3 B(1, 0, 0);
+    vec3 C(0, 1, 0);
+    triangle tri(A, B, C);
+
+    vec3 interSectionPt;
+
+    // Przypadek 1: Linia przechodząca przez trójkąt.
+    // P1: (-1, 0.5, 0), P2: (1, 0.5, 0) ->  true
+    vec3 P1_case1(-1, 0.5, 0);
+    vec3 P2_case1(1, 0.5, 0);
+    bool case1 = tri.intersectsLine(P1_case1, P2_case1, interSectionPt);
+    cout << "Przypadek 1 (linia przechodzaca przez trojkat): "
+         << (case1 ? "true" : "false") << endl;
+
+    // Przypadek 2: Linia leżąca na plaszczyźnie trójkąta, ale poza nim.
+    // P1: (2, -1, 0), P2: (2, 2, 0) -> false
+    vec3 P1_case2(2, -1, 0);
+    vec3 P2_case2(2, 2, 0);
+    bool case2 = tri.intersectsLine(P1_case2, P2_case2, interSectionPt);
+    cout << "Przypadek 2 (linia na plaszczyznie, ale poza trojkatem): "
+         << (case2 ? "true" : "false") << endl;
+
+    // Przypadek 3: Linia nieprzecinajaca trójkąta.
+    // P1: (0, 0, -1), P2: (0, 0, 1) -> false
+    vec3 P1_case3(0, 0, -1);
+    vec3 P2_case3(0, 0, 1);
+    bool case3 = tri.intersectsLine(P1_case3, P2_case3, interSectionPt);
+    cout << "Przypadek 3 (linia przecinajaca plaszczyzne poza trojkatem): "
+         << (case3 ? "true" : "false") << endl;
 
     return 0;
 }

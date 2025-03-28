@@ -8,6 +8,7 @@
 #include "mat3x3.h"
 #include "triangle.h"
 #include "plane.h"
+#include "objectParser.h"
 using namespace std;
 using namespace math;
 
@@ -134,6 +135,13 @@ int main() {
     bool case3 = tri.intersectsLine(P1_case3, P2_case3, interSectionPt);
     cout << "Przypadek 3 (linia przecinajaca plaszczyzne poza trojkatem): "
          << (case3 ? "true" : "false") << endl;
+
+    //.obj parser
+    objectParser parser;
+    parser.loadObj("D:\\Studia\\RayTracer\\RayTracer\\cube.obj");
+
+
+
 
     return 0;
 }

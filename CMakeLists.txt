@@ -20,6 +20,8 @@ add_executable(RayTracer main.cpp
         Math/plane.h
         Math/triangle.cpp
         Math/triangle.h
+        Utils/objectParser.cpp
+        Utils/objectParser.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Math Utils)

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "vec3.h"
+
 #include "triangle.h"
 
 #include <vector>
@@ -27,6 +28,10 @@ public:
   bool loadObj (const string& path){
       ifstream objFile(path);
 
+      if(!objFile.is_open()) {
+          cout << "Could not open file" << endl;
+      }
+
       string line;
       while (getline (objFile, line)) {
           stringstream ss(line);
@@ -40,6 +45,10 @@ public:
           else if(type=="f"){
               int v1, v2, v3;
               ss >> v1 >> v2 >> v3;
+              triangle t(vertices[v1-1], vertices[v2-1], vertices[v3-1]);
+              triangles.push_back(t);
+
+
           }
           
       }

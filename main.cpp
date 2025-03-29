@@ -138,7 +138,7 @@ int main() {
 
     //.obj parser
     objectParser parser;
-    parser.loadObj("D:\\Studia\\RayTracer\\RayTracer\\cube.obj");
+    parser.loadObj("G:\\RayTracer\\cube.obj");
 
 
 

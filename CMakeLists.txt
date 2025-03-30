@@ -22,6 +22,14 @@ add_executable(RayTracer main.cpp
         Math/triangle.h
         Utils/objectParser.cpp
         Utils/objectParser.h
+        Display/lightIntensity.cpp
+        Display/lightIntensity.h
+        Display/Image.cpp
+        Display/Image.h
+        Display/Camera.cpp
+        Display/Camera.h
+        Display/Renderer.cpp
+        Display/Renderer.h
 )
 
-target_include_directories(${PROJECT_NAME} PUBLIC Math Utils)
+target_include_directories(${PROJECT_NAME} PUBLIC Math Utils Display)

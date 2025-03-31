@@ -18,9 +18,9 @@ namespace display{
         float farPlane;
 
         Camera();
-        ~Camera();
+        virtual ~Camera() = default;
         Camera(math::vec3 &position, math::vec3 &target, math::vec3 &up, float nearPlane, float farPlane);
-
+        virtual math::ray fireRay(int pixelX, int pixelY, int imgWidth, int imgHeight) = 0;
     };
 }
 

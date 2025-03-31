@@ -15,6 +15,7 @@ using namespace math;
 void printMatrix(mat3x3& m);
 
 int main() {
+    /*
     //Zadanie 1 i 2
     vec3 v1(0, 2, 3);
     vec3 v2(4, 5, 6);
@@ -139,8 +140,7 @@ int main() {
     //.obj parser
     objectParser parser;
     parser.loadObj("G:\\RayTracer\\cube.obj");
-
-
+*/
 
 
     return 0;

@@ -3,3 +3,11 @@
 //
 
 #include "Renderer.h"
+
+#include "OrthographicCam.h"
+
+using namespace display;
+
+Renderer::Renderer() {
+    this->camera = new OrthographicCam();
+}

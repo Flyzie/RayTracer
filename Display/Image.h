@@ -17,7 +17,7 @@ namespace display {
         vector<lightIntensity> pixels;
         Image(int width, int height);
 
-        void setPixel(int x, int y, lightIntensity &pixel);
+        void setPixel(int x, int y, const lightIntensity &pixel);
         void save(const string &filename) const;
 
     };

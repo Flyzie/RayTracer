@@ -154,14 +154,15 @@ int main() {
         1000.0f);
 
     vec3 sphere1Center = vec3(0, 0, -30);
-    sphere s1(sphere1Center, 0.5f);
-    lightIntensity bgColor(255,0,0);
+    lightIntensity sphere1Col(0, 0, 1);
+    sphere s1(sphere1Center, 0.5f, sphere1Col);
+    lightIntensity bgColor(0,0,0);
 
     vector<primitive*> primitives;
     primitives.push_back(&s1);
-    Renderer renderer(&OrthoCam, primitives, &bgColor);
+    Renderer renderer(&OrthoCam, primitives, &bgColor, 20);
 
-    renderer.render(300, 300);
+    renderer.render(500, 500);
 
     //perspektywiczna
     PerspectiveCam PerspCam(
@@ -173,15 +174,15 @@ int main() {
         66.0f);
 
     vec3 sphere2Center = vec3(0, 0, -10);
-    sphere s2(sphere2Center, 2.0f);
+    sphere s2(sphere2Center, 2.0f, sphere1Col);
     vec3 sphere3Center = vec3(10, 5, -20);
-    sphere s3(sphere3Center, 2.0f);
+    sphere s3(sphere3Center, 2.0f, sphere1Col);
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
 
-    Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor);
+    Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(300, 300);
     return 0;
 }

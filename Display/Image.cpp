@@ -12,7 +12,7 @@ using namespace display;
 Image::Image(int width, int height) : width(width), height(height) {
     pixels.resize(width * height);
 }
-void Image::setPixel(int x, int y, lightIntensity &pixel) {
+void Image::setPixel(int x, int y, const lightIntensity &pixel) {
     if(x < 0 || x >= width || y < 0 || y >= height) {
         throw out_of_range("Pixel out of bounds");
     }
@@ -30,7 +30,7 @@ void Image::save(const string &filename) const{
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             const lightIntensity &pixel = pixels[y * width + x];
-            file << pixel.r << " " << pixel.g << " " << pixel.b << "\n";
+            file << pixel.red() << " " << pixel.green() << " " << pixel.blue() << "\n";
         }
         file << "\n";
     }

@@ -26,6 +26,7 @@ namespace display {
         lightIntensity operator-(const lightIntensity& other) const;
         lightIntensity operator*(const lightIntensity& other) const;
         lightIntensity operator/(const lightIntensity& other) const;
+        lightIntensity operator/(const float& num) const;
 
     };
 }

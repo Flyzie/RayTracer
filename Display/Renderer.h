@@ -17,10 +17,11 @@ namespace display {
         Camera* camera;
         vector<math::primitive*> primitives;
         lightIntensity* background;
+        int aliasingSamples;
     public:
         Renderer();
         ~Renderer() = default;
-        Renderer(Camera* camera, vector<math::primitive*> primitives, lightIntensity* background);
+        Renderer(Camera* camera, vector<math::primitive*> primitives, lightIntensity* background, int aliasingSamples);
         Image render(int width, int height);
     };
 }

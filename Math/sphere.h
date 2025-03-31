@@ -19,7 +19,7 @@ namespace math {
         float radius;
         sphere();
         ~sphere();
-        sphere(vec3 &center, float radius);
+        sphere(vec3 &center, float radius, display::lightIntensity &color);
         sphere(const sphere &sphere);
         bool intersection(ray &ray);
 

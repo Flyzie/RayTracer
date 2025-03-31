@@ -15,11 +15,12 @@ using namespace std;
 sphere::sphere() {
     this->center = vec3();
     this->radius = 0;
+    this->color = display::lightIntensity ();
 }
 
 sphere::~sphere() {}
 
-sphere::sphere(vec3 &center, float radius) {
+sphere::sphere(vec3 &center, float radius, display::lightIntensity &color) {
     this->center = center;
 
     if (radius < 0) {
@@ -27,6 +28,7 @@ sphere::sphere(vec3 &center, float radius) {
     }
 
     this->radius = radius;
+    this->color = color;
 }
 
 sphere::sphere(const sphere &sphere) {

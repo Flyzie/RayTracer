@@ -6,6 +6,7 @@
 
 using namespace display;
 using namespace std;
+#include <algorithm>
 
 
 
@@ -36,6 +37,18 @@ lightIntensity::lightIntensity(double r) {
     this -> b = 0.0f;
 }
 
+int lightIntensity::red() const {
+    return std::clamp(static_cast<int>(this->r * 255), 0, 255);
+}
+
+int lightIntensity::green() const {
+    return std::clamp(static_cast<int>(this->g * 255), 0, 255);
+}
+
+int lightIntensity::blue() const {
+    return std::clamp(static_cast<int>(this->b * 255), 0, 255);
+}
+
 lightIntensity lightIntensity::operator+(const lightIntensity& other) const {
     return {this->r + other.r, this->g + other.g, this->b + other.b};
 }
@@ -50,6 +63,10 @@ lightIntensity lightIntensity::operator*(const lightIntensity& other) const {
 
 lightIntensity lightIntensity::operator/(const lightIntensity& other) const {
     return {this->r / other.r, this->g / other.g, this->b / other.b};
+}
+
+lightIntensity lightIntensity::operator/(const float &num) const {
+    return {this->r / num, this->g / num, this->b / num};
 }
 
 

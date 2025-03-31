@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <ostream>
+#include <random>
 #include "PerspectiveCam.h"
 #include "OrthographicCam.h"
 using namespace std;
@@ -16,32 +17,46 @@ Renderer::Renderer() {
     this->camera = new OrthographicCam();
     this->primitives = vector<math::primitive*>();
     this->background = new lightIntensity(1,0,0);
+    this->aliasingSamples = 5;
 }
 
-Renderer::Renderer(Camera *camera, vector<math::primitive*> primitives, lightIntensity *background) {
+Renderer::Renderer(Camera *camera, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
     this->camera = camera;
     this->primitives = primitives;
     this->background = background;
+    this->aliasingSamples = aliasingSamples;
 }
 
 Image Renderer::render(int width, int height) {
     Image image(width, height);
-    lightIntensity hitColor (50, 100, 255);
-    lightIntensity bgColor (255, 0, 0);
+
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<float> dist(-0.15f, 0.15f);
+
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-            bool hit = false;
-            math::ray ray = camera->fireRay(x, y, width, height);
-            for (int i = 0; i < this->primitives.size(); i++) {
-                if (this->primitives[i]->intersection(ray)) {
-                    hit = true;
-                    image.setPixel(x, y, hitColor);
-                    break;
+            lightIntensity finalColor;
+            for (int s = 0; s < this->aliasingSamples; s++) {
+                float jitterX = dist(gen);
+                float jitterY = dist(gen);
+                bool hit = false;
+                math::ray ray = camera->fireRay(x + jitterX, y + jitterY, width, height);
+                for (int i = 0; i < this->primitives.size(); i++) {
+                    if (this->primitives[i]->intersection(ray)) {
+                        hit = true;
+                        finalColor = finalColor + this->primitives[i]->color;
+                        //image.setPixel(x, y, this->primitives[i]->color);
+                        break;
+                    }
+                }
+                if (!hit) {
+                    finalColor = finalColor + *this->background;
+                   // image.setPixel(x, y, *this->background);
                 }
             }
-            if (!hit) {
-                image.setPixel(x, y, bgColor);
-            }
+            finalColor = finalColor / this->aliasingSamples;
+            image.setPixel(x, y, finalColor);
         }
     }
     Camera *cam = this->camera;

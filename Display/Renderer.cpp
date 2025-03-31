@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <ostream>
-
+#include "PerspectiveCam.h"
 #include "OrthographicCam.h"
 using namespace std;
 
@@ -48,11 +48,11 @@ Image Renderer::render(int width, int height) {
     if (dynamic_cast<OrthographicCam*>(cam)) {
         image.save("orthographic.ppm");
         cout << "Image saved as orthographic.ppm" << endl;
-    } /*  TO DAL CIEBIE RAJCZYK!!!!!!!! else if (dynamic_cast<Perspective *>(cam)) {
+    } else if (dynamic_cast<PerspectiveCam*>(cam)) {
         image.save("perspective.ppm");
-        std::cout << "Image saved as perspective.ppm" << std::endl;
-    }*/else {
-        cout << "problem with the camera" << endl;
+        cout << "Image saved as perspective.ppm" << endl;
+    } else {
+        cout << "Problem with the camera" << endl;
     }
     return image;
 }

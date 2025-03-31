@@ -34,8 +34,11 @@ vec3 vec3::subtract(vec3 &other) {
     return {this->x - other.x, this->y - other.y, this->z - other.z};
 }
 
-vec3 vec3::multiply(float multiplier) {
-    return {this->x * multiplier, this->y * multiplier, this->z * multiplier};
+vec3& vec3::multiply(float multiplier) {
+    this->x *= multiplier;
+    this->y *= multiplier;
+    this->z *= multiplier;
+    return *this;
 }
 
 vec3 vec3::divide(float divider) {

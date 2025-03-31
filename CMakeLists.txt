@@ -33,6 +33,8 @@ add_executable(RayTracer main.cpp
         Display/OrthographicCam.cpp
         Display/OrthographicCam.h
         Math/primitive.h
+        Display/PerspectiveCam.cpp
+        Display/PerspectiveCam.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Math Utils Display)

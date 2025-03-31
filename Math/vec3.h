@@ -15,7 +15,8 @@ namespace math {
         vec3(const vec3 &other);
         vec3 add(vec3 &other);
         vec3 subtract(vec3 &other);
-        vec3 multiply(float multiplier);
+
+        vec3 &multiply(float multiplier);
         vec3 divide(float divider);
         float length();
         vec3 normalize();

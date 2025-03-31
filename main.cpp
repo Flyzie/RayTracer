@@ -13,6 +13,7 @@
 #include "triangle.h"
 #include "plane.h"
 #include "objectParser.h"
+#include "PerspectiveCam.h"
 using namespace std;
 using namespace math;
 using namespace display;
@@ -144,6 +145,7 @@ int main() {
     objectParser parser;
     parser.loadObj("G:\\RayTracer\\cube.obj");
 */
+    //ortagonalna
     OrthographicCam OrthoCam(
         vec3(0, 0, 0),
         vec3(0, 0, -1),
@@ -151,16 +153,36 @@ int main() {
         0.1f,
         1000.0f);
 
-    vec3 sphere1Center = vec3(0, 0, -50);
+    vec3 sphere1Center = vec3(0, 0, -30);
     sphere s1(sphere1Center, 0.5f);
     lightIntensity bgColor(255,0,0);
 
     vector<primitive*> primitives;
     primitives.push_back(&s1);
-
     Renderer renderer(&OrthoCam, primitives, &bgColor);
 
     renderer.render(300, 300);
+
+    //perspektywiczna
+    PerspectiveCam PerspCam(
+        vec3(0, 0, 0),
+        vec3(0, 0, -1),
+        vec3(0, 1, 0),
+        0.1f,
+        1000.0f,
+        66.0f);
+
+    vec3 sphere2Center = vec3(0, 0, -10);
+    sphere s2(sphere2Center, 2.0f);
+    vec3 sphere3Center = vec3(10, 5, -20);
+    sphere s3(sphere3Center, 2.0f);
+
+    vector<primitive*> primitivesPerspective;
+    primitivesPerspective.push_back(&s2);
+    primitivesPerspective.push_back(&s3);
+
+    Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor);
+    perspRenderer.render(300, 300);
     return 0;
 }
 

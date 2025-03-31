@@ -20,7 +20,7 @@ namespace display {
     public:
         Renderer();
         ~Renderer() = default;
-        Renderer(Camera* camera, vector<math::primitive>, lightIntensity* background);
+        Renderer(Camera* camera, vector<math::primitive*> primitives, lightIntensity* background);
         Image render(int width, int height);
     };
 }

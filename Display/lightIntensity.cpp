@@ -16,6 +16,8 @@ lightIntensity::lightIntensity() {
     this -> b = 0.0f;
 }
 
+lightIntensity::~lightIntensity(){}
+
 lightIntensity::lightIntensity(double r, double g, double b) {
     this -> r = r;
     this -> g = g;
@@ -32,10 +34,6 @@ lightIntensity::lightIntensity(double r) {
     this -> r = r;
     this -> g = 0.0f;
     this -> b = 0.0f;
-}
-
-int lightIntensity::red() const {
-
 }
 
 lightIntensity lightIntensity::operator+(const lightIntensity& other) const {

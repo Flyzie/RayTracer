@@ -16,7 +16,7 @@ Camera::Camera() {
     this->farPlane = 1000.0f;
 }
 
-Camera::Camera(math::vec3 &position, math::vec3 &target, math::vec3 &up, float nearPlane, float farPlane) {
+Camera::Camera(const math::vec3 &position,const math::vec3 &target,const math::vec3 &up, float nearPlane, float farPlane) {
     this->position = position;
     this->target = target;
     this->up = up;

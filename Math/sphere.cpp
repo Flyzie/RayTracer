@@ -42,6 +42,11 @@ float root(float b, float discriminant, float a) {
     }
 }
 
+bool sphere::intersection(ray &ray) {
+    return this->intersection(ray, numeric_limits<float>::min(), numeric_limits<float>::max());
+}
+
+
 bool sphere::intersection(ray &ray, float t_min, float t_max) {
    vec3 oc = ray.origin.subtract(this->center);
 
@@ -51,10 +56,14 @@ bool sphere::intersection(ray &ray, float t_min, float t_max) {
 
     float discriminant = b * b - a * c;
 
+    if (discriminant < 0) {
+        return false;
+    }
+
     // Calculate the two points of intersection
     float t1 = root(b, -discriminant, a);
     float t2 = root(b, discriminant, a);
-
+/*
     if (discriminant < 0) {
        cout << "no intersection" << endl;
     }else if (discriminant > 0) {
@@ -68,6 +77,7 @@ bool sphere::intersection(ray &ray, float t_min, float t_max) {
         cout << "Parameter T: " << t1 << endl;
         cout << "Intersection point: " << hitPoint1.x << " " << hitPoint1.y << " " << hitPoint1.z << endl;
     }
+    */
     return (t1 > t_min && t2 < t_max) || (t2 > t_min && t2 < t_max);
 }
 

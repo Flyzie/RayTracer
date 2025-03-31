@@ -18,7 +18,7 @@ namespace display {
         Image(int width, int height);
 
         void setPixel(int x, int y, lightIntensity &pixel);
-        void save(string &filename);
+        void save(const string &filename) const;
 
     };
 }

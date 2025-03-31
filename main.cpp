@@ -2,7 +2,11 @@
 #include <iostream>
 #include <math.h>
 
+#include "Camera.h"
 #include "vec3.h"
+#include "OrthographicCam.h"
+#include "LightIntensity.h"
+#include "Renderer.h"
 #include "ray.h"
 #include "sphere.h"
 #include "mat3x3.h"
@@ -11,8 +15,7 @@
 #include "objectParser.h"
 using namespace std;
 using namespace math;
-
-void printMatrix(mat3x3& m);
+using namespace display;
 
 int main() {
     /*
@@ -141,20 +144,26 @@ int main() {
     objectParser parser;
     parser.loadObj("G:\\RayTracer\\cube.obj");
 */
+    OrthographicCam OrthoCam(
+        vec3(0, 0, 0),
+        vec3(0, 0, -1),
+        vec3(0, 1, 0),
+        0.1f,
+        1000.0f);
 
+    vec3 sphere1Center = vec3(0, 0, -50);
+    sphere s1(sphere1Center, 0.5f);
+    lightIntensity bgColor(255,0,0);
 
+    vector<primitive*> primitives;
+    primitives.push_back(&s1);
+
+    Renderer renderer(&OrthoCam, primitives, &bgColor);
+
+    renderer.render(300, 300);
     return 0;
 }
 
 
 
 
-
-void printMatrix(mat3x3& m) {
-  for (int i = 0; i < 3; i++) {
-      for (int j = 0; j < 3; j++) {
-          cout << m.m[i * 3 + j] << " ";
-      }
-      cout << endl;
-  }
-}

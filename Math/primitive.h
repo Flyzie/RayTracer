@@ -10,7 +10,6 @@
 namespace math {
     class primitive {
         public:
-        display::lightIntensity color;
         virtual bool intersection(ray &ray) = 0;
     };
 }

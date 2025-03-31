@@ -9,7 +9,7 @@ using namespace display;
 #include "Image.h"
 
 
-Image::Image(int width, int height) {
+Image::Image(int width, int height) : width(width), height(height) {
     pixels.resize(width * height);
 }
 void Image::setPixel(int x, int y, lightIntensity &pixel) {
@@ -19,7 +19,7 @@ void Image::setPixel(int x, int y, lightIntensity &pixel) {
     pixels[y * width + x] = pixel;
 }
 
-void Image::save(string &filename) {
+void Image::save(const string &filename) const{
     ofstream file(filename);
     if(!file.is_open()) {
         cout << "Could not open file" << endl;

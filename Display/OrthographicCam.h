@@ -10,7 +10,7 @@
 namespace display {
     class OrthographicCam : public Camera {
     public:
-        OrthographicCam(math::vec3 &position, math::vec3 &target, math::vec3 &up, float nearPlane, float farPlane);
+        OrthographicCam(const math::vec3 &position,const math::vec3 &target,const math::vec3 &up, float nearPlane, float farPlane);
         OrthographicCam();
         math::ray fireRay(int pixelX, int pixelY, int imageWidth, int imageHeight);
     };

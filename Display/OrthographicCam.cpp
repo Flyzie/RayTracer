@@ -5,7 +5,7 @@
 using namespace display;
 #include "OrthographicCam.h"
 
-OrthographicCam::OrthographicCam(math::vec3 &position, math::vec3 &target, math::vec3 &up, float nearPlane, float farPlane)
+OrthographicCam::OrthographicCam(const math::vec3 &position,const math::vec3 &target,const math::vec3 &up, float nearPlane, float farPlane)
 : Camera(position, target, up, nearPlane, farPlane) {
 }
 

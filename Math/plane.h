@@ -7,11 +7,10 @@
 
 #include "vec3.h"
 #include "ray.h"
-#include <cmath>
+#include "primitive.h"
 
 namespace math {
-
-    class plane {
+    class plane : public primitive {
     public:
         vec3 point;
         vec3 normal;
@@ -19,10 +18,9 @@ namespace math {
         plane();
         plane(vec3 &p, vec3 &n);
 
+        bool intersection(ray &ray) override;
         bool intersection(ray &r, float t_min, float t_max, float &t);
     };
-
 }
 
-
-#endif //PLANE_H
+#endif // PLANE_H

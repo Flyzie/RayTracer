@@ -10,9 +10,10 @@ namespace math {
 
     plane::plane() : point(), normal() {}
 
-    plane::plane(vec3 &p, vec3 &n) {
+    plane::plane(vec3 &p, vec3 &n, display::lightIntensity &color) {
         point = p;
         normal = n.normalize();
+        this->color = color;
     }
 
     bool plane::intersection(ray &ray) {

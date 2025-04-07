@@ -175,12 +175,14 @@ int main() {
 
     vec3 sphere2Center = vec3(0, 0, -10);
     sphere s2(sphere2Center, 2.0f, sphere1Col);
-    vec3 sphere3Center = vec3(10, 5, -20);
-    sphere s3(sphere3Center, 2.0f, sphere1Col);
+    vec3 sphere3Center = vec3(5, 5, -20);
+    lightIntensity sphere3Col(1, 0, 0);
+    sphere s3(sphere3Center, 2.0f, sphere3Col);
 
     vec3 p1Normal(0, 1, 0); // Normal pointing up
     vec3 p1Center(0, -0.5, 0);
-    plane P(p1Center, p1Normal);
+    lightIntensity p1Col(0.2, 0.7, 0);
+    plane P(p1Center, p1Normal, p1Col);
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
@@ -188,7 +190,7 @@ int main() {
     primitivesPerspective.push_back(&P);
 
     Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor, 10);
-    perspRenderer.render(300, 300);
+    perspRenderer.render(500, 500);
     return 0;
 }
 

@@ -16,7 +16,7 @@ namespace math {
         vec3 normal;
 
         plane();
-        plane(vec3 &p, vec3 &n);
+        plane(vec3 &p, vec3 &n, display::lightIntensity &color);
 
         bool intersection(ray &ray) override;
         bool intersection(ray &r, float t_min, float t_max, float &t);

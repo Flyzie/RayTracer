@@ -71,7 +71,7 @@ Image Renderer::render(int width, int height) {
                                 finalColor = finalColor + ambientCol + diffuseCol + specularCol;
                                 //image.setPixel(x, y, this->primitives[i]->color);
                                 hit = true;
-                                break;
+                                //break;
                             }
                         }
                     }

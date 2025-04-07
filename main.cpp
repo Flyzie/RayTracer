@@ -16,6 +16,7 @@
 #include "PerspectiveCam.h"
 #include "Light/Light.h"
 #include "Light/DirectionalLight.h"
+#include "Light/PointLight.h"
 using namespace std;
 using namespace math;
 using namespace display;
@@ -174,6 +175,7 @@ int main() {
     lightIntensity bgColor(0,0.2,0);
 
     DirectionalLight light1(lightIntensity(0.7,1,0.4), vec3(0,1,1));
+    PointLight pointLight(lightIntensity(1.7, 3, 1.4), vec3(5, 3, -8));
 
 
 
@@ -181,6 +183,7 @@ int main() {
     vector<Light*> lights;
     primitives.push_back(&s1);
     lights.push_back(&light1);
+    lights.push_back(&pointLight);
     Renderer renderer(&OrthoCam,lights, primitives, &bgColor, 20);
 
     renderer.render(300, 300);

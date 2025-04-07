@@ -1,7 +1,7 @@
 #include "triangle.h"
 #include <cmath>
 #include <limits>
-/*
+
 static void barycentric(math::vec3 &A, math::vec3 &B, math::vec3 &C, math::vec3 &P,
                         float &u, float &v, float &w) {
     math::vec3 v0 = B.subtract(A);
@@ -28,32 +28,45 @@ namespace math {
 
     triangle::triangle() : A(), B(), C() {}
 
-    triangle::triangle(vec3 &a, vec3 &b, vec3 &c) {
+    triangle::triangle(vec3 &a, vec3 &b, vec3 &c, Material &mat) {
         A = a;
         B = b;
         C = c;
+        material = mat;
     }
 
-    bool triangle::intersection(ray &ray) {
+    vec3* triangle::intersection(ray &ray) {
         vec3 edge1 = B.subtract(A);
         vec3 edge2 = C.subtract(A);
         vec3 h = ray.direction.crossProduct(edge2);
         float a = edge1.dotProduct(h);
 
-        if (fabs(a) < 1e-6f) return false;
+        if (fabs(a) < 1e-6f) return nullptr;
 
         float f = 1.0f / a;
         vec3 s = ray.origin.subtract(A);
         float u = f * s.dotProduct(h);
-        if (u < 0.0f || u > 1.0f) return false;
+        if (u < 0.0f || u > 1.0f) return nullptr;
 
         vec3 q = s.crossProduct(edge1);
         float v = f * ray.direction.dotProduct(q);
-        if (v < 0.0f || u + v > 1.0f) return false;
+        if (v < 0.0f || u + v > 1.0f) return nullptr;
 
         float t = f * edge2.dotProduct(q);
-        return (t > std::numeric_limits<float>::min());
+        if (t > std::numeric_limits<float>::epsilon()) {
+            vec3 hitPoint = ray.pointAtParameter(t);
+            return new vec3(hitPoint);
+        }
+
+        return nullptr;
+    }
+
+    vec3 triangle::getNormal(vec3 point) {
+        vec3 edge1 = B.subtract(A);
+        vec3 edge2 = C.subtract(A);
+        vec3 normal = edge1.crossProduct(edge2);
+        normal.normalize();
+        return normal;
     }
 
 }
-*/

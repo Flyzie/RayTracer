@@ -41,6 +41,8 @@ add_executable(RayTracer main.cpp
         Light/Light.h
         Light/DirectionalLight.cpp
         Light/DirectionalLight.h
+        Light/PointLight.cpp
+        Light/PointLight.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC Math Utils Display)

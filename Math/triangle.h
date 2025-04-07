@@ -1,7 +1,7 @@
 //
 // Created by Kubus on 25.03.2025.
 //
-/*
+
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
@@ -15,12 +15,11 @@ namespace math {
         vec3 A, B, C;
 
         triangle();
-        triangle(vec3 &a, vec3 &b, vec3 &c);
+        triangle(vec3 &a, vec3 &b, vec3 &c, Material &material);
 
-        bool intersection(ray &ray) override;
-        bool intersectsLine(vec3 &P1, vec3 &P2, vec3 &intersectionPoint);
+        vec3* intersection(ray &ray) override;
+        vec3 getNormal(vec3 point) override;
     };
 }
 
 #endif // TRIANGLE_H
-*/

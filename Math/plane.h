@@ -1,7 +1,7 @@
 //
 // Created by Kubus on 25.03.2025.
 //
-/*
+
 #ifndef PLANE_H
 #define PLANE_H
 
@@ -16,12 +16,11 @@ namespace math {
         vec3 normal;
 
         plane();
-        plane(vec3 &p, vec3 &n, display::lightIntensity &color);
+        plane(vec3 &p, vec3 &n, Material &material);
 
-        bool intersection(ray &ray) override;
-        bool intersection(ray &r, float t_min, float t_max, float &t);
+        vec3* intersection(ray &ray) override;
+        vec3 getNormal(vec3 point) override;
     };
 }
 
 #endif // PLANE_H
-*/

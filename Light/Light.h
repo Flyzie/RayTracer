@@ -7,19 +7,20 @@
 #include "primitive.h"
 #ifndef LIGHT_H
 #define LIGHT_H
+using namespace display;
 
 namespace lighting {
     class Light {
     public:
-        display::lightIntensity intensity;
+        lightIntensity intensity;
 
-        Light(display::lightIntensity intensity);
+        Light(lightIntensity intensity);
         Light();
         virtual ~Light() = default;
 
-        virtual display::lightIntensity getAmbient(math::primitive* object) = 0;
-        virtual display::lightIntensity getDiffuse(math::primitive* object, math::vec3 point) = 0;
-        virtual display::lightIntensity getSpecular(math::primitive* object, math::vec3 point, display::Camera* camera) = 0;
+        virtual lightIntensity getAmbient(math::primitive* object) = 0;
+        virtual lightIntensity getDiffuse(math::primitive* object, math::vec3 point) = 0;
+        virtual lightIntensity getSpecular(math::primitive* object, math::vec3 point, Camera* camera) = 0;
 
     };
 }

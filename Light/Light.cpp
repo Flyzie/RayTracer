@@ -5,11 +5,11 @@
 #include "Light.h"
 using namespace lighting;
 
-Light::Light(display::lightIntensity intensity) {
+Light::Light(lightIntensity intensity) {
     this->intensity = intensity;
 }
 
 Light::Light() {
-    this->intensity = display::lightIntensity(0,0,0);
+    this->intensity = lightIntensity(0,0,0);
 }
 

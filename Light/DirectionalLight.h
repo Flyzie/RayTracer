@@ -6,19 +6,21 @@
 #ifndef DIRECTIONALLIGHT_H
 #define DIRECTIONALLIGHT_H
 #include "Light.h"
+using namespace display;
+using namespace math;
 
 
 namespace lighting {
     class DirectionalLight : public Light {
         public:
-        math::vec3 direction;
+        vec3 direction;
 
-        DirectionalLight(display::lightIntensity intensity, math::vec3 direction);
+        DirectionalLight(lightIntensity intensity, vec3 direction);
         DirectionalLight();
 
-        display::lightIntensity getAmbient(math::primitive* object) override;
-        display::lightIntensity getDiffuse(math::primitive* object, math::vec3 point) override;
-        display::lightIntensity getSpecular(math::primitive* object, math::vec3 point, display::Camera* camera) override;
+        lightIntensity getAmbient(primitive* object) override;
+        lightIntensity getDiffuse(primitive* object, vec3 point) override;
+        lightIntensity getSpecular(primitive* object, vec3 point, Camera* camera) override;
 
     };
 }

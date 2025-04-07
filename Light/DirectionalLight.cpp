@@ -12,15 +12,15 @@ using namespace math;
 using namespace std;
 
 DirectionalLight::DirectionalLight()
-:Light(display::lightIntensity()), direction(vec3(0, -1, -1)) {}
+:Light(lightIntensity()), direction(vec3(0, -1, -1)) {}
 
-DirectionalLight::DirectionalLight(display::lightIntensity intensity, vec3 direction) : Light(intensity), direction(direction) {}
+DirectionalLight::DirectionalLight(lightIntensity intensity, vec3 direction) : Light(intensity), direction(direction) {}
 
-display::lightIntensity DirectionalLight::getAmbient(primitive *object) {
+lightIntensity DirectionalLight::getAmbient(primitive *object) {
     return this->intensity * object->material.ambient;
 }
 
-display::lightIntensity DirectionalLight::getDiffuse(primitive *object, vec3 point) {
+lightIntensity DirectionalLight::getDiffuse(primitive *object, vec3 point) {
     vec3 normal = object->getNormal(point);
     vec3 lightDir = this->direction.normalize();
 
@@ -29,7 +29,7 @@ display::lightIntensity DirectionalLight::getDiffuse(primitive *object, vec3 poi
     return this->intensity * object->material.diffuse * diffuseFactor;
 }
 
-display::lightIntensity DirectionalLight::getSpecular(primitive *object, vec3 point, display::Camera *camera) {
+lightIntensity DirectionalLight::getSpecular(primitive *object, vec3 point, Camera *camera) {
     vec3 normal = object->getNormal(point);
     vec3 lightDir = this->direction.normalize();
     vec3 viewDir = (camera->position - point).normalize();

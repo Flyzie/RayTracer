@@ -28,7 +28,7 @@ Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse)
     this->reflectiveness = 0.0f;
 }
 
-Material::Material(const display::lightIntensity &ambient, const display::lightIntensity &diffuse, const display::lightIntensity &specular) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -36,7 +36,7 @@ Material::Material(const display::lightIntensity &ambient, const display::lightI
     this->reflectiveness = 0.0f;
 }
 
-Material::Material(const display::lightIntensity &ambient, const display::lightIntensity &diffuse, const display::lightIntensity &specular, float shininess) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -44,7 +44,7 @@ Material::Material(const display::lightIntensity &ambient, const display::lightI
     this->reflectiveness = 0.0f;
 }
 
-Material::Material(const display::lightIntensity &ambient, const display::lightIntensity &diffuse, const display::lightIntensity &specular, float shininess, float reflectiveness) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, float reflectiveness) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;

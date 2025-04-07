@@ -14,9 +14,12 @@
 #include "plane.h"
 #include "objectParser.h"
 #include "PerspectiveCam.h"
+#include "Light/Light.h"
+#include "Light/DirectionalLight.h"
 using namespace std;
 using namespace math;
 using namespace display;
+using namespace lighting;
 
 int main() {
     /*
@@ -153,16 +156,34 @@ int main() {
         0.1f,
         1000.0f);
 
+    Material sphere1Mat (lightIntensity(0.1, 0, 0),
+        lightIntensity(1.0, 0.0, 0.0),
+        lightIntensity(0.5, 0.5, 0.5),
+        50,
+        0.0);
+
+    Material sphere2Mat (lightIntensity(0, 0, 0.1),
+        lightIntensity(0.0, 0.0, 1.0),
+        lightIntensity(0.5, 0.5, 0.5),
+        50,
+        0.0);
+
     vec3 sphere1Center = vec3(0, 0, -30);
     lightIntensity sphere1Col(0, 0, 1);
-    sphere s1(sphere1Center, 0.5f, sphere1Col);
-    lightIntensity bgColor(0,0,0);
+    sphere s1(sphere1Center, 0.5f, sphere1Mat);
+    lightIntensity bgColor(0,0.2,0);
+
+    DirectionalLight light1(lightIntensity(0.7,1,0.4), vec3(0,1,1));
+
+
 
     vector<primitive*> primitives;
+    vector<Light*> lights;
     primitives.push_back(&s1);
-    Renderer renderer(&OrthoCam, primitives, &bgColor, 20);
+    lights.push_back(&light1);
+    Renderer renderer(&OrthoCam,lights, primitives, &bgColor, 20);
 
-    renderer.render(500, 500);
+    renderer.render(300, 300);
 
     //perspektywiczna
     PerspectiveCam PerspCam(
@@ -174,23 +195,21 @@ int main() {
         66.0f);
 
     vec3 sphere2Center = vec3(0, 0, -10);
-    sphere s2(sphere2Center, 2.0f, sphere1Col);
+    sphere s2(sphere2Center, 2.0f, sphere1Mat);
     vec3 sphere3Center = vec3(5, 5, -20);
-    lightIntensity sphere3Col(1, 0, 0);
-    sphere s3(sphere3Center, 2.0f, sphere3Col);
+    sphere s3(sphere3Center, 2.0f, sphere2Mat);
 
-    vec3 p1Normal(0, 1, 0); // Normal pointing up
-    vec3 p1Center(0, -0.5, 0);
-    lightIntensity p1Col(0.2, 0.7, 0);
-    plane P(p1Center, p1Normal, p1Col);
+    //vec3 p1Normal(0, 1, 0); // Normal pointing up
+   // vec3 p1Center(0, -0.5, 0);
+    //lightIntensity p1Col(0.2, 0.7, 0);
+    //plane P(p1Center, p1Normal, p1Col);
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
-    primitivesPerspective.push_back(&P);
 
-    Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor, 10);
-    perspRenderer.render(500, 500);
+    Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
+    perspRenderer.render(300, 300);
     return 0;
 }
 

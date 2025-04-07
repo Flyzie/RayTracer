@@ -8,6 +8,7 @@
 #include "Image.h"
 #include "lightIntensity.h"
 #include "primitive.h"
+#include "../Light/Light.h"
 
 using namespace std;
 
@@ -16,12 +17,13 @@ namespace display {
     private:
         Camera* camera;
         vector<math::primitive*> primitives;
+        vector<lighting::Light*> lights;
         lightIntensity* background;
         int aliasingSamples;
     public:
         Renderer();
         ~Renderer() = default;
-        Renderer(Camera* camera, vector<math::primitive*> primitives, lightIntensity* background, int aliasingSamples);
+        Renderer(Camera* camera,vector<lighting::Light*> lights, vector<math::primitive*> primitives, lightIntensity* background, int aliasingSamples);
         Image render(int width, int height);
     };
 }

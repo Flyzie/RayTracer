@@ -17,14 +17,16 @@ Renderer::Renderer() {
     this->camera = new OrthographicCam();
     this->primitives = vector<math::primitive*>();
     this->background = new lightIntensity(1,0,0);
+    this->lights = std::vector<lighting::Light *>();
     this->aliasingSamples = 5;
 }
 
-Renderer::Renderer(Camera *camera, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
+Renderer::Renderer(Camera *camera,vector<lighting::Light*> lights, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
     this->camera = camera;
     this->primitives = primitives;
     this->background = background;
     this->aliasingSamples = aliasingSamples;
+    this->lights = lights;
 }
 
 Image Renderer::render(int width, int height) {
@@ -43,11 +45,19 @@ Image Renderer::render(int width, int height) {
                 bool hit = false;
                 math::ray ray = camera->fireRay(x + jitterX, y + jitterY, width, height);
                 for (int i = 0; i < this->primitives.size(); i++) {
-                    if (this->primitives[i]->intersection(ray)) {
-                        hit = true;
-                        finalColor = finalColor + this->primitives[i]->color;
-                        //image.setPixel(x, y, this->primitives[i]->color);
-                        break;
+
+                    math::vec3 *intersection = this->primitives[i]->intersection(ray);
+                    if (intersection != nullptr) {
+                        for (int z = 0; z < this->lights.size(); z++) {
+                            lightIntensity ambientCol = this->lights[z]->getAmbient(this->primitives[i]);
+                            lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
+                            lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
+
+                            finalColor = finalColor + ambientCol + diffuseCol + specularCol;
+                            //image.setPixel(x, y, this->primitives[i]->color);
+                            hit = true;
+                            break;
+                        }
                     }
                 }
                 if (!hit) {

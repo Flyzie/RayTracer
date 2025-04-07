@@ -22,6 +22,11 @@ namespace math {
         vec3 normalize();
         float dotProduct(vec3 &other);
         vec3 crossProduct(vec3 &other);
+
+
+        vec3 operator-(const vec3 &v);
+        vec3 operator*(float scalar);
+
     };
 }
 

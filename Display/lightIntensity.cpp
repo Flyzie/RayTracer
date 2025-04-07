@@ -61,6 +61,10 @@ lightIntensity lightIntensity::operator*(const lightIntensity& other) const {
     return {this->r * other.r, this->g * other.g, this->b * other.b};
 }
 
+lightIntensity lightIntensity::operator*(const float &num) const {
+    return {this->r * num, this->g * num, this->b * num};
+}
+
 lightIntensity lightIntensity::operator/(const lightIntensity& other) const {
     return {this->r / other.r, this->g / other.g, this->b / other.b};
 }

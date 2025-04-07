@@ -1,7 +1,7 @@
 #include "triangle.h"
 #include <cmath>
 #include <limits>
-
+/*
 static void barycentric(math::vec3 &A, math::vec3 &B, math::vec3 &C, math::vec3 &P,
                         float &u, float &v, float &w) {
     math::vec3 v0 = B.subtract(A);
@@ -56,3 +56,4 @@ namespace math {
     }
 
 }
+*/

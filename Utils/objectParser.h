@@ -1,7 +1,7 @@
 //
 // Created by barti on 28.03.2025.
 //
-
+/*
 #ifndef RAYTRACER_OBJECTPARSER_H
 #define RAYTRACER_OBJECTPARSER_H
 
@@ -60,3 +60,4 @@ public:
 
 
 #endif //RAYTRACER_OBJECTPARSER_H
+*/

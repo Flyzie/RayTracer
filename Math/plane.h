@@ -1,7 +1,7 @@
 //
 // Created by Kubus on 25.03.2025.
 //
-
+/*
 #ifndef PLANE_H
 #define PLANE_H
 
@@ -24,3 +24,4 @@ namespace math {
 }
 
 #endif // PLANE_H
+*/

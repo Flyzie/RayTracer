@@ -19,10 +19,10 @@ namespace math {
         float radius;
         sphere();
         ~sphere();
-        sphere(vec3 &center, float radius, display::lightIntensity &color);
+        sphere(vec3 &center, float radius, Material &material);
         sphere(const sphere &sphere);
         vec3 getNormal(vec3 point);
-        bool intersection(ray &ray);
+        vec3* intersection(ray &ray);
 
     };
 }

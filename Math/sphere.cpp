@@ -15,12 +15,12 @@ using namespace std;
 sphere::sphere() {
     this->center = vec3();
     this->radius = 0;
-    this->color = display::lightIntensity ();
+    this->material = Material();
 }
 
 sphere::~sphere() {}
 
-sphere::sphere(vec3 &center, float radius, display::lightIntensity &color) {
+sphere::sphere(vec3 &center, float radius, Material &material) {
     this->center = center;
 
     if (radius < 0) {
@@ -28,12 +28,13 @@ sphere::sphere(vec3 &center, float radius, display::lightIntensity &color) {
     }
 
     this->radius = radius;
-    this->color = color;
+    this->material = material;
 }
 
 sphere::sphere(const sphere &sphere) {
     this->center = sphere.center;
     this->radius = sphere.radius;
+    this->material = sphere.material;
 }
 
 float root(float b, float discriminant, float a) {
@@ -44,9 +45,6 @@ float root(float b, float discriminant, float a) {
     }
 }
 
-bool sphere::intersection(ray &ray) {
-    return this->intersection(ray, numeric_limits<float>::min(), numeric_limits<float>::max());
-}
 
 vec3 sphere::getNormal(vec3 point) {
     vec3 normal = point.subtract(this->center);
@@ -55,37 +53,34 @@ vec3 sphere::getNormal(vec3 point) {
 }
 
 
-bool sphere::intersection(ray &ray, float t_min, float t_max) {
+vec3* sphere::intersection(ray &ray) {
    vec3 oc = ray.origin.subtract(this->center);
 
     float a = ray.direction.dotProduct(ray.direction);
-    float b = oc.dotProduct(ray.direction);
+    float b = 2 * oc.dotProduct(ray.direction);
     float c = oc.dotProduct(oc) - this->radius * this->radius;
 
-    float discriminant = b * b - a * c;
+    float discriminant = (b * b) - (4 * a * c);
 
     if (discriminant < 0) {
-        return false;
+        return nullptr;
     }
 
     // Calculate the two points of intersection
-    float t1 = root(b, -discriminant, a);
-    float t2 = root(b, discriminant, a);
-/*
-    if (discriminant < 0) {
-       cout << "no intersection" << endl;
-    }else if (discriminant > 0) {
-        vec3 hitPoint1 = ray.pointAtParameter(t1);
-        vec3 hitPoint2 = ray.pointAtParameter(t2);
-        cout << "Parameter T: " << t1 << " and " << t2 <<endl;
-        cout << "Intersection point 1: " << hitPoint1.x << " " << hitPoint1.y << " " << hitPoint1.z << endl;
-        cout << "Intersection point 2: " << hitPoint2.x << " " << hitPoint2.y << " " << hitPoint2.z << endl;
-    }else {
-        vec3 hitPoint1 = ray.pointAtParameter(t1);
-        cout << "Parameter T: " << t1 << endl;
-        cout << "Intersection point: " << hitPoint1.x << " " << hitPoint1.y << " " << hitPoint1.z << endl;
+    float x1 = (-b - std::sqrt(discriminant)) / (2 * a);
+    float x2 = (-b + std::sqrt(discriminant)) / (2 * a);
+    float x;
+
+    if (x1 > 0) {
+        x = x1;
+    } else if (x2 > 0) {
+        x = 2;
+    } else {
+        return nullptr;
     }
-    */
-    return (t1 > t_min && t2 < t_max) || (t2 > t_min && t2 < t_max);
+
+    vec3 result = ray.pointAtParameter(x);
+    vec3* resultPtr = new vec3(result);
+    return resultPtr;
 }
 

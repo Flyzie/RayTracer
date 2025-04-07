@@ -1,7 +1,7 @@
 //
 // Created by Kubus on 25.03.2025.
 //
-
+/*
 #include "plane.h"
 #include <cmath>
 #include <limits>
@@ -32,3 +32,4 @@ namespace math {
         return (t >= t_min && t <= t_max);
     }
 }
+*/

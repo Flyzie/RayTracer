@@ -48,6 +48,12 @@ bool sphere::intersection(ray &ray) {
     return this->intersection(ray, numeric_limits<float>::min(), numeric_limits<float>::max());
 }
 
+vec3 sphere::getNormal(vec3 point) {
+    vec3 normal = point.subtract(this->center);
+    normal.normalize();
+    return normal;
+}
+
 
 bool sphere::intersection(ray &ray, float t_min, float t_max) {
    vec3 oc = ray.origin.subtract(this->center);

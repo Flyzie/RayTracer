@@ -21,6 +21,7 @@ namespace math {
         ~sphere();
         sphere(vec3 &center, float radius, display::lightIntensity &color);
         sphere(const sphere &sphere);
+        vec3 getNormal(vec3 point);
         bool intersection(ray &ray);
 
     };

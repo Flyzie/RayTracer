@@ -178,9 +178,14 @@ int main() {
     vec3 sphere3Center = vec3(10, 5, -20);
     sphere s3(sphere3Center, 2.0f, sphere1Col);
 
+    vec3 p1Normal(0, 1, 0); // Normal pointing up
+    vec3 p1Center(0, -0.5, 0);
+    plane P(p1Center, p1Normal);
+
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
+    primitivesPerspective.push_back(&P);
 
     Renderer perspRenderer(&PerspCam, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(300, 300);

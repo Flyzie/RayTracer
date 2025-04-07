@@ -165,7 +165,7 @@ int main() {
     Material sphere2Mat (lightIntensity(0, 0, 0.1),
         lightIntensity(0.0, 0.0, 1.0),
         lightIntensity(0.5, 0.5, 0.5),
-        50,
+        100,
         0.0);
 
     vec3 sphere1Center = vec3(0, 0, -30);
@@ -194,10 +194,10 @@ int main() {
         1000.0f,
         66.0f);
 
-    vec3 sphere2Center = vec3(0, 0, -10);
+    vec3 sphere2Center = vec3(-2, 0, -10);
     sphere s2(sphere2Center, 2.0f, sphere1Mat);
-    vec3 sphere3Center = vec3(5, 5, -20);
-    sphere s3(sphere3Center, 2.0f, sphere2Mat);
+    vec3 sphere3Center = vec3(0, 3, -8);
+    sphere s3(sphere3Center, 1.5f, sphere2Mat);
 
     //vec3 p1Normal(0, 1, 0); // Normal pointing up
    // vec3 p1Center(0, -0.5, 0);
@@ -208,8 +208,8 @@ int main() {
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
 
-    Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
-    perspRenderer.render(300, 300);
+    Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 15);
+    perspRenderer.render(500, 500);
     return 0;
 }
 

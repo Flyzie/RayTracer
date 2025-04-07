@@ -21,6 +21,7 @@ namespace lighting {
         virtual lightIntensity getAmbient(math::primitive* object) = 0;
         virtual lightIntensity getDiffuse(math::primitive* object, math::vec3 point) = 0;
         virtual lightIntensity getSpecular(math::primitive* object, math::vec3 point, Camera* camera) = 0;
+        virtual math::ray genShadowRay(math::vec3 origin) = 0;
 
     };
 }

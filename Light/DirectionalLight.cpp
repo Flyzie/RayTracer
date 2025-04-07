@@ -40,3 +40,12 @@ lightIntensity DirectionalLight::getSpecular(primitive *object, vec3 point, Came
 
     return this->intensity * object->material.specular * specularFactor;
 }
+
+ray DirectionalLight::genShadowRay(vec3 origin) {
+    ray sray;
+    sray.origin = origin;
+    sray.direction = this->direction;
+    return sray;
+}
+
+

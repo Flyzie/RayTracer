@@ -49,14 +49,30 @@ Image Renderer::render(int width, int height) {
                     math::vec3 *intersection = this->primitives[i]->intersection(ray);
                     if (intersection != nullptr) {
                         for (int z = 0; z < this->lights.size(); z++) {
-                            lightIntensity ambientCol = this->lights[z]->getAmbient(this->primitives[i]);
-                            lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
-                            lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
+                            math::ray shadowRay = lights[z]->genShadowRay(*intersection);
+                            math::vec3 *shadowHit = nullptr;
 
-                            finalColor = finalColor + ambientCol + diffuseCol + specularCol;
-                            //image.setPixel(x, y, this->primitives[i]->color);
-                            hit = true;
-                            break;
+                            for (int p = 0; p < this->primitives.size(); p++) {
+                                if (p == i) {
+                                    continue;
+                                }
+                                shadowHit = this->primitives[p]->intersection(shadowRay);
+                                if (shadowHit != nullptr) {
+                                    break;
+                                }
+                            }
+                            if (shadowHit != nullptr) {
+                                finalColor = this->lights[z]->getAmbient(this->primitives[i]);
+                            }else {
+                                lightIntensity ambientCol = this->lights[z]->getAmbient(this->primitives[i]);
+                                lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
+                                lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
+
+                                finalColor = finalColor + ambientCol + diffuseCol + specularCol;
+                                //image.setPixel(x, y, this->primitives[i]->color);
+                                hit = true;
+                                break;
+                            }
                         }
                     }
                 }

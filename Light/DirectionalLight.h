@@ -21,6 +21,7 @@ namespace lighting {
         lightIntensity getAmbient(primitive* object) override;
         lightIntensity getDiffuse(primitive* object, vec3 point) override;
         lightIntensity getSpecular(primitive* object, vec3 point, Camera* camera) override;
+        ray genShadowRay(vec3 origin) override;
 
     };
 }

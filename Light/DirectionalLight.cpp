@@ -35,7 +35,6 @@ lightIntensity DirectionalLight::getSpecular(primitive *object, vec3 point, Came
     vec3 viewDir = (camera->position - point).normalize();
 
     vec3 R = (normal * (2.0f * normal.dotProduct(lightDir)) - lightDir).normalize();
-
     float specAngle = max(0.0f, (R.dotProduct(viewDir)));
     float specularFactor = pow(specAngle, object->material.shininess);
 

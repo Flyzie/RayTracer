@@ -76,7 +76,7 @@ vec3 vec3::crossProduct(vec3 &other) {
 }
 
 vec3 vec3::operator-(const vec3 &v) {
-    return {-v.x, -v.y, -v.z};
+    return {this->x - v.x, this->y - v.y, this->z - v.z};
 }
 
 vec3 vec3::operator*(float scalar) {
@@ -84,13 +84,16 @@ vec3 vec3::operator*(float scalar) {
 }
 
 vec3 vec3::operator-() {
-    this->x = -x;
-    this->y = -y;
-    this->z = -z;
-
-    return *this;
+    return vec3{
+    -this->x,
+    -this->y,
+    -this->z,
+        };
 }
 
 vec3 vec3::operator+(const vec3 &v) const{
     return {this->x + v.x, this->y + v.y, this->z + v.z};
 }
+
+
+

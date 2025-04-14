@@ -160,13 +160,13 @@ int main() {
     Material sphere1Mat (lightIntensity(0.01, 0, 0),
         lightIntensity(1.0, 0.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
-        50,
+        10,
         0.0);
 
     Material sphere2Mat (lightIntensity(0, 0, 0.01),
         lightIntensity(0.0, 0.0, 1.0),
         lightIntensity(1.0, 1.0, 1.0),
-        80,
+        5,
         0.0);
 
     Material planeMat (lightIntensity(0, 0.01, 0),

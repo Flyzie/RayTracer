@@ -48,8 +48,10 @@ float root(float b, float discriminant, float a) {
 
 vec3 sphere::getNormal(vec3 point) {
     vec3 normal = point.subtract(this->center);
-    normal.normalize();
-    return normal;
+
+    vec3 finalVec = normal.normalize();
+
+    return finalVec;
 }
 
 

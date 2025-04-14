@@ -76,29 +76,24 @@ Image Renderer::render(int width, int height) {
 
                                 finalColor = finalColor + this->lights[z]->getAmbient(this->primitives[i]);
 
-                                lightIntensity ambientCol = this->lights[z]->getAmbient(this->primitives[i]);
                                 lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
                                 lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
-
-
                                 /*if (specularCol.r != 0 || specularCol.g != 0 || specularCol.b != 0) {
                                     cout<<"specular works" << endl;
                                 }*/
+
                                 if (!isShadow) {
-                                    finalColor = finalColor + specularCol + diffuseCol;
+                                    finalColor = finalColor + diffuseCol + specularCol;
                                 }
-                                //image.setPixel(x, y, this->primitives[i]->color);
 
                         }
                         hit = true;
                         break;
-
                     }
                     delete intersection;
                 }
                 if (!hit) {
                     finalColor = finalColor + *this->background;
-                   // image.setPixel(x, y, *this->background);
                 }
             }
             finalColor = finalColor / this->aliasingSamples;

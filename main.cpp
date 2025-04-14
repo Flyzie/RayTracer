@@ -175,12 +175,24 @@ int main() {
         50,
         0.0);
 
+    Material rightWall (lightIntensity(0, 0.01, 0.01),
+        lightIntensity(0.0, 0.3, 0.3),
+        lightIntensity(0.7, 0.7, 0.7),
+        50,
+        0.0);
+
+    Material backWall (lightIntensity(0.01, 0.01, 0),
+        lightIntensity(0.3, 0.5, 0.7),
+        lightIntensity(0.7, 0.7, 0.7),
+        50,
+        0.0);
+
     vec3 sphere1Center = vec3(0, 0, -30);
     lightIntensity sphere1Col(0, 0, 1);
     sphere s1(sphere1Center, 0.5f, sphere1Mat);
     lightIntensity bgColor(0.1,0.1,0.1);
 
-    DirectionalLight light1(lightIntensity(1.0,1.0,1.0), vec3(0,1,1));
+    DirectionalLight light1(lightIntensity(0.7,0.7,0.7), vec3(-0.2,-0.5,-0.5));
     PointLight pointLight(lightIntensity(1.7, 3, 1.4), vec3(6, 3, -4));
 
 
@@ -188,8 +200,8 @@ int main() {
     vector<primitive*> primitives;
     vector<Light*> lights;
     primitives.push_back(&s1);
-    //lights.push_back(&light1);
-    lights.push_back(&pointLight);
+    lights.push_back(&light1);
+    //lights.push_back(&pointLight);
     Renderer renderer(&OrthoCam,lights, primitives, &bgColor, 20);
 
     renderer.render(300, 300);
@@ -208,16 +220,30 @@ int main() {
     vec3 sphere3Center = vec3(0, 3, -8);
     sphere s3(sphere3Center, 1.5f, sphere2Mat);
 
+    //floor
     vec3 p1Normal(0, 1, 0); // Normal pointing up
     vec3 p1Center(0, -4.5, 0);
     plane P(p1Center, p1Normal, planeMat);
+
+    //right wall
+    vec3 p2Normal(1,0,0);
+    vec3 p2Center(-10.5, 0, 0);
+    plane P2(p2Center, p2Normal, rightWall);
+
+    //backwall
+    vec3 p3Normal(0,0,1);
+    vec3 p3Center(0, 0, -28);
+    plane P3(p3Center, p3Normal, backWall);
+
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
     primitivesPerspective.push_back(&P);
+   // primitivesPerspective.push_back(&P2);
+  //  primitivesPerspective.push_back(&P3);
 
-    Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 15);
+    Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(500, 500);
     return 0;
 }

@@ -74,7 +74,7 @@ vec3* sphere::intersection(ray &ray) {
     if (x1 > 0) {
         x = x1;
     } else if (x2 > 0) {
-        x = 2;
+        x = x2;
     } else {
         return nullptr;
     }

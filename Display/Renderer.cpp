@@ -42,15 +42,24 @@ Image Renderer::render(int width, int height) {
             for (int s = 0; s < this->aliasingSamples; s++) {
                 float jitterX = dist(gen);
                 float jitterY = dist(gen);
+
                 bool hit = false;
                 math::ray ray = camera->fireRay(x + jitterX, y + jitterY, width, height);
+
                 for (int i = 0; i < this->primitives.size(); i++) {
 
                     math::vec3 *intersection = this->primitives[i]->intersection(ray);
                     if (intersection != nullptr) {
+                        math::primitive* object = this->primitives[i];
+                        math::vec3 normal = object->getNormal(*intersection);
+
                         for (int z = 0; z < this->lights.size(); z++) {
+
+                            math::vec3 bias = normal * 0.001f;
                             math::ray shadowRay = lights[z]->genShadowRay(*intersection);
                             math::vec3 *shadowHit = nullptr;
+
+                            bool isShadow = false;
 
                             for (int p = 0; p < this->primitives.size(); p++) {
                                 if (p == i) {
@@ -58,23 +67,34 @@ Image Renderer::render(int width, int height) {
                                 }
                                 shadowHit = this->primitives[p]->intersection(shadowRay);
                                 if (shadowHit != nullptr) {
+                                    delete shadowHit;
+                                    isShadow = true;
                                     break;
                                 }
+                                delete shadowHit;
                             }
-                            if (shadowHit != nullptr) {
-                                finalColor = this->lights[z]->getAmbient(this->primitives[i]);
-                            }else {
+
+                                finalColor = finalColor + this->lights[z]->getAmbient(this->primitives[i]);
+
                                 lightIntensity ambientCol = this->lights[z]->getAmbient(this->primitives[i]);
                                 lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
                                 lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
 
-                                finalColor = finalColor + ambientCol + diffuseCol + specularCol;
+
+                                /*if (specularCol.r != 0 || specularCol.g != 0 || specularCol.b != 0) {
+                                    cout<<"specular works" << endl;
+                                }*/
+                                if (!isShadow) {
+                                    finalColor = finalColor + specularCol + diffuseCol;
+                                }
                                 //image.setPixel(x, y, this->primitives[i]->color);
-                                hit = true;
-                                //break;
-                            }
+
                         }
+                        hit = true;
+                        break;
+
                     }
+                    delete intersection;
                 }
                 if (!hit) {
                     finalColor = finalColor + *this->background;

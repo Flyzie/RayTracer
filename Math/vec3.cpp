@@ -82,3 +82,15 @@ vec3 vec3::operator-(const vec3 &v) {
 vec3 vec3::operator*(float scalar) {
     return {this->x * scalar, this->y * scalar, this->z * scalar};
 }
+
+vec3 vec3::operator-() {
+    this->x = -x;
+    this->y = -y;
+    this->z = -z;
+
+    return *this;
+}
+
+vec3 vec3::operator+(const vec3 &v) const{
+    return {this->x + v.x, this->y + v.y, this->z + v.z};
+}

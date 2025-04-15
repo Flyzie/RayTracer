@@ -161,36 +161,36 @@ int main() {
         lightIntensity(1.0, 0.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         10,
-        0.0,
-        DIFFUSE);
+        0.0
+        );
 
     Material sphere2Mat (lightIntensity(0, 0, 0.01),
         lightIntensity(0.0, 0.0, 1.0),
         lightIntensity(1.0, 1.0, 1.0),
         5,
-        0.0,
-        DIFFUSE);
+        0.0
+        );
 
     Material planeMat (lightIntensity(0, 0.01, 0),
         lightIntensity(0.0, 1.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0,
-        DIFFUSE);
+        0.0
+        );
 
     Material rightWall (lightIntensity(0, 0.01, 0.01),
         lightIntensity(0.0, 0.3, 0.3),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0,
-        DIFFUSE);
+        0.0
+        );
 
     Material backWall (lightIntensity(0.01, 0.01, 0),
         lightIntensity(0.3, 0.5, 0.7),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0,
-        DIFFUSE);
+        0.0
+        );
 
     Material glassMat(
         lightIntensity(0.1f, 0.1f, 0.1f),
@@ -199,8 +199,8 @@ int main() {
         128.0,
         0.3,
         1.5,
-        true,
-        REFLECTIVE
+        true
+
     );
 
     Material mirrorMat(
@@ -210,8 +210,7 @@ int main() {
     256.0,
     0.9,
     1.0,
-    false,
-    REFRACTIVE
+    false
     );
 
     vec3 sphere1Center = vec3(0, 0, -30);

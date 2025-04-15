@@ -13,17 +13,9 @@ Material::Material() {
     this->reflectiveness = 0.0f;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
-Material::Material(const lightIntensity &ambient, const MaterialType type) {
+Material::Material(const lightIntensity &ambient) {
     this->ambient = ambient;
     this->diffuse = lightIntensity(0, 0, 0);
     this->specular = lightIntensity(0, 0, 0);
@@ -31,17 +23,9 @@ Material::Material(const lightIntensity &ambient, const MaterialType type) {
     this->reflectiveness = 0.0f;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
-Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const MaterialType type) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = lightIntensity(0, 0, 0);
@@ -49,17 +33,9 @@ Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse,
     this->reflectiveness = 0.0f;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
-Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, const MaterialType type) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -67,17 +43,9 @@ Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse,
     this->reflectiveness = 0.0f;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
+ }
 
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
-}
-
-Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, const MaterialType type) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -85,17 +53,9 @@ Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse,
     this->reflectiveness = 0.0f;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
-Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, float reflectiveness, const MaterialType type) {
+Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, float reflectiveness) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -103,17 +63,9 @@ Material::Material(const lightIntensity &ambient, const lightIntensity &diffuse,
     this->reflectiveness = reflectiveness;
     this->refractiveIndex = 1.0f;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
-Material::Material (const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, float reflectiveness, float refractiveIndex, bool isTransparent, const MaterialType type) {
+Material::Material (const lightIntensity &ambient, const lightIntensity &diffuse, const lightIntensity &specular, float shininess, float reflectiveness, float refractiveIndex, bool isTransparent) {
     this->ambient = ambient;
     this->diffuse = diffuse;
     this->specular = specular;
@@ -121,14 +73,6 @@ Material::Material (const lightIntensity &ambient, const lightIntensity &diffuse
     this->reflectiveness = reflectiveness;
     this->refractiveIndex = refractiveIndex;
     this->isTransparent = isTransparent;
-
-    if (isTransparent) {
-        this->type = REFRACTIVE;
-    } else if (reflectiveness > 0.8f) {
-        this->type = REFLECTIVE;
-    } else {
-        this->type = DIFFUSE;
-    }
 }
 
 

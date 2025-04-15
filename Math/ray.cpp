@@ -12,7 +12,7 @@ ray::ray() {
 }
 
 
-ray::ray(vec3 &origin, vec3 &direction) {
+ray::ray(const vec3 &origin,const vec3 &direction) {
     this->origin = origin;
     this->direction = direction;
 }

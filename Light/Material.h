@@ -9,7 +9,11 @@
 #include "lightIntensity.h"
 #include "vec3.h"
 
-
+enum MaterialType {
+    DIFFUSE,
+    REFLECTIVE,
+    REFRACTIVE
+};
 class Material {
     public:
     display::lightIntensity diffuse;
@@ -18,16 +22,20 @@ class Material {
 
     float shininess;
     float reflectiveness;
+    float refractiveIndex;
+    bool isTransparent;
+    MaterialType type;
 
     Material();
     ~Material() = default;
     Material(const Material& other);
 
-    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular, float shininess, float reflectiveness);
-    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular, float shininess);
-    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular);
-    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse);
-    Material(const display::lightIntensity& ambient);
+    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular, float shininess, float reflectiveness, float refractiveIndex, bool isTransparent, MaterialType type);
+    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular, float shininess, float refractiveIndex, MaterialType type);
+    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, const display::lightIntensity& specular, MaterialType type);
+    Material(const display::lightIntensity &ambient, const display::lightIntensity &diffuse, const display::lightIntensity &specular, float shininess, MaterialType type);
+    Material(const display::lightIntensity& ambient, const display::lightIntensity& diffuse, MaterialType type);
+    Material(const display::lightIntensity& ambient, MaterialType type);
 
 };
 

@@ -26,4 +26,4 @@ namespace lighting {
     };
 }
 
-#endif // POINTLIGHT_H
+#endif

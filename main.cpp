@@ -157,35 +157,62 @@ int main() {
         0.1f,
         1000.0f);
 
-    Material sphere1Mat (lightIntensity(0.01, 0, 0),
+    Material sphere1Mat (lightIntensity(0.0, 0, 0),
         lightIntensity(1.0, 0.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         10,
-        0.0);
+        0.0,
+        DIFFUSE);
 
     Material sphere2Mat (lightIntensity(0, 0, 0.01),
         lightIntensity(0.0, 0.0, 1.0),
         lightIntensity(1.0, 1.0, 1.0),
         5,
-        0.0);
+        0.0,
+        DIFFUSE);
 
     Material planeMat (lightIntensity(0, 0.01, 0),
         lightIntensity(0.0, 1.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0);
+        0.0,
+        DIFFUSE);
 
     Material rightWall (lightIntensity(0, 0.01, 0.01),
         lightIntensity(0.0, 0.3, 0.3),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0);
+        0.0,
+        DIFFUSE);
 
     Material backWall (lightIntensity(0.01, 0.01, 0),
         lightIntensity(0.3, 0.5, 0.7),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0);
+        0.0,
+        DIFFUSE);
+
+    Material glassMat(
+        lightIntensity(0.1f, 0.1f, 0.1f),
+        lightIntensity(0.2f, 0.2f, 0.2f),
+        lightIntensity(1.0f, 1.0f, 1.0f),
+        128.0,
+        0.3,
+        1.5,
+        true,
+        REFLECTIVE
+    );
+
+    Material mirrorMat(
+    lightIntensity(0.0, 0.0, 0.0),
+    lightIntensity(0.0, 0.0, 0.0),
+    lightIntensity(1.0, 1.0, 1.0),
+    256.0,
+    0.9,
+    1.0,
+    false,
+    REFRACTIVE
+    );
 
     vec3 sphere1Center = vec3(0, 0, -30);
     lightIntensity sphere1Col(0, 0, 1);
@@ -193,7 +220,7 @@ int main() {
     lightIntensity bgColor(0.1,0.1,0.1);
 
     DirectionalLight light1(lightIntensity(0.7,0.7,0.7), vec3(-0.2,-0.5,-0.5));
-    PointLight pointLight(lightIntensity(1.7, 3, 1.4), vec3(6, 3, -4));
+    PointLight pointLight(lightIntensity(1.7, 3, 1.4), vec3(5, 5, -5));
 
 
 
@@ -216,9 +243,9 @@ int main() {
         90.0f);
 
     vec3 sphere2Center = vec3(-2, 0, -10);
-    sphere s2(sphere2Center, 2.0f, sphere1Mat);
+    sphere s2(sphere2Center, 2.0f, glassMat);
     vec3 sphere3Center = vec3(0, 3, -8);
-    sphere s3(sphere3Center, 1.5f, sphere2Mat);
+    sphere s3(sphere3Center, 1.5f, mirrorMat);
 
     //floor
     vec3 p1Normal(0, 1, 0); // Normal pointing up
@@ -240,8 +267,8 @@ int main() {
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
     primitivesPerspective.push_back(&P);
-   // primitivesPerspective.push_back(&P2);
-  //  primitivesPerspective.push_back(&P3);
+    primitivesPerspective.push_back(&P2);
+    primitivesPerspective.push_back(&P3);
 
     Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(500, 500);

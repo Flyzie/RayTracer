@@ -7,13 +7,14 @@
 #include <iostream>
 #include <ostream>
 #include <random>
+#include <cmath>
 #include "PerspectiveCam.h"
 #include "OrthographicCam.h"
 using namespace std;
 
 using namespace display;
 
-Renderer::Renderer() {
+/*Renderer::Renderer() {
     this->camera = new OrthographicCam();
     this->primitives = vector<math::primitive*>();
     this->background = new lightIntensity(1,0,0);
@@ -21,12 +22,33 @@ Renderer::Renderer() {
     this->aliasingSamples = 5;
 }
 
-Renderer::Renderer(Camera *camera,vector<lighting::Light*> lights, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
+Renderer::Renderer(Camera *camera, vector<lighting::Light*> lights, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
     this->camera = camera;
     this->primitives = primitives;
     this->background = background;
     this->aliasingSamples = aliasingSamples;
     this->lights = lights;
+}
+
+math::ray Renderer::refractRay(const math::ray &incident, const math::vec3 &normal, float n1, float n2) {
+    float cosI = -normal.dotProduct(incident.direction);
+    float eta = n1 / n2;
+    float k = 1 - eta * eta * (1 - cosI * cosI);
+
+    math::vec3 refractedDir;
+    if (k < 0) {
+        refractedDir = math::vec3(0, 0, 0); // total internal reflection
+    } else {
+        math::vec3 temp1 = incident.direction.multiply(eta);
+        math::vec3 temp2 = normal.multiply(eta * cosI - sqrtf(k));
+        refractedDir = temp1.add(temp2);
+    }
+
+    math::ray refractedRay;
+    math::vec3 temp3 = incident.direction.multiply(0.001f);
+    refractedRay.origin = incident.origin.add(temp3);
+    refractedRay.direction = refractedDir.normalize();
+    return refractedRay;
 }
 
 Image Renderer::render(int width, int height) {
@@ -74,24 +96,51 @@ Image Renderer::render(int width, int height) {
                                 delete shadowHit;
                             }
 
-                                finalColor = finalColor + this->lights[z]->getAmbient(this->primitives[i]);
+                            finalColor = finalColor + this->lights[z]->getAmbient(object);
 
-                                lightIntensity diffuseCol = this->lights[z]->getDiffuse(this->primitives[i], *intersection);
-                                lightIntensity specularCol = this->lights[z]->getSpecular(this->primitives[i], *intersection, this->camera);
-                                /*if (specularCol.r != 0 || specularCol.g != 0 || specularCol.b != 0) {
-                                    cout<<"specular works" << endl;
-                                }*/
+                            lightIntensity diffuseCol = this->lights[z]->getDiffuse(object, *intersection);
+                            lightIntensity specularCol = this->lights[z]->getSpecular(object, *intersection, this->camera);
 
-                                if (!isShadow) {
-                                    finalColor = finalColor + diffuseCol + specularCol;
-                                }
-
+                            if (!isShadow) {
+                                finalColor = finalColor + diffuseCol + specularCol;
+                            }
                         }
+
+                        if (object->material.isTransparent) {
+                            float n1 = 1.0f;
+                            float n2 = object->material.refractiveIndex;
+                            math::ray refracted = refractRay(ray, normal, n1, n2);
+
+                            for (int j = 0; j < this->primitives.size(); j++) {
+                                math::vec3 *refractHit = this->primitives[j]->intersection(refracted);
+                                if (refractHit != nullptr) {
+                                    math::primitive* refractObj = this->primitives[j];
+                                    lightIntensity refractedCol;
+
+                                    for (int l = 0; l < this->lights.size(); l++) {
+                                        refractedCol = refractedCol + this->lights[l]->getAmbient(refractObj);
+
+                                        if (refractObj != object) {
+                                            lightIntensity diff = this->lights[l]->getDiffuse(refractObj, *refractHit);
+                                            lightIntensity spec = this->lights[l]->getSpecular(refractObj, *refractHit, this->camera);
+                                            refractedCol = refractedCol + diff + spec;
+                                        }
+                                    }
+                                    finalColor = finalColor + refractedCol;
+                                    delete refractHit;
+                                    break;
+                                }
+                                delete refractHit;
+                            }
+                        }
+
                         hit = true;
+                        delete intersection;
                         break;
                     }
                     delete intersection;
                 }
+
                 if (!hit) {
                     finalColor = finalColor + *this->background;
                 }
@@ -100,6 +149,7 @@ Image Renderer::render(int width, int height) {
             image.setPixel(x, y, finalColor);
         }
     }
+
     Camera *cam = this->camera;
     if (dynamic_cast<OrthographicCam*>(cam)) {
         image.save("orthographic.ppm");
@@ -110,5 +160,170 @@ Image Renderer::render(int width, int height) {
     } else {
         cout << "Problem with the camera" << endl;
     }
+
+    return image;
+}*/
+Renderer::~Renderer() {
+    delete camera;
+    delete background;
+}
+
+Renderer::Renderer() {
+    this->camera = new OrthographicCam();
+    this->primitives = vector<math::primitive*>();
+    this->background = new lightIntensity(1,0,0);
+    this->lights = std::vector<lighting::Light *>();
+    this->aliasingSamples = 5;
+}
+
+Renderer::Renderer(Camera *camera, vector<lighting::Light*> lights, vector<math::primitive*> primitives, lightIntensity *background, int aliasingSamples) {
+    this->camera = camera;
+    this->primitives = primitives;
+    this->background = background;
+    this->aliasingSamples = aliasingSamples;
+    this->lights = lights;
+}
+math::ray Renderer::reflectRay(const math::ray& incident, const math::vec3& normal, const math::vec3& hitPoint) const {
+    float cos_theta = normal.dotProduct(incident.direction);
+    math::vec3 reflected = incident.direction - normal * (2 * cos_theta);
+    return math::ray(hitPoint + reflected.normalize() * 0.01f, reflected.normalize());
+}
+
+math::ray Renderer::refractRay(const math::ray &incident, math::vec3 normal, float n1, float n2, const math::vec3 &hitPoint) const {
+    float cos_i = -normal.dotProduct(incident.direction.normalize());
+    float eta = n1 / n2;
+    math::vec3 n = normal;
+
+    if (cos_i < 0) {
+        cos_i = -cos_i;
+        n = -normal;
+        eta = n2 / n1;
+    }
+
+    float k = 1 - eta * eta * (1 - cos_i * cos_i);
+    if (k < 0) return math::ray(hitPoint, math::vec3(0,0,0)); // Całkowite odbicie
+
+    math::vec3 refracted_dir = (incident.direction.normalize() * eta) + (n * (eta * cos_i - sqrtf(k)));
+    refracted_dir = refracted_dir.normalize();
+
+    // Bias w kierunku przeciwnym do normalnej
+    return math::ray(hitPoint - n * 0.001f, refracted_dir);
+}
+
+lightIntensity Renderer::trace(math::ray &ray, int depth) const {
+    if (depth <= 0) return *background;
+
+    math::primitive* closest = nullptr;
+    math::vec3 hit_point;
+    float min_dist = INFINITY;
+
+    for (auto obj : primitives) {
+        math::vec3* hit = obj->intersection(ray);
+        if (hit) {
+            float dist = (ray.origin - *hit).lengthSquared();
+            if (dist < min_dist) {
+                min_dist = dist;
+                hit_point = *hit;
+                closest = obj;
+            }
+            delete hit;
+        }
+    }
+
+    if (!closest) return *background;
+
+    const Material& mat = closest->material;
+    math::vec3 normal = closest->getNormal(hit_point).normalize();
+    lightIntensity local = calculateLocalIllumination(closest, hit_point);
+    lightIntensity reflected(0, 0, 0);
+    lightIntensity refracted(0, 0, 0);
+
+    if (mat.reflectiveness > 0.0f) {
+        math::ray reflected_ray = reflectRay(ray, normal, hit_point);
+        reflected = trace(reflected_ray, depth - 1) * mat.reflectiveness;
+    }
+
+    if (mat.isTransparent) {
+        math::ray refracted_ray = refractRay(ray, normal, 1.0f, mat.refractiveIndex, hit_point);
+        if (refracted_ray.direction != math::vec3(0,0,0)) {
+            refracted = trace(refracted_ray, depth - 1) * (1.0f - mat.reflectiveness);
+        }
+    }
+
+    return local + reflected + refracted;
+}
+
+lightIntensity Renderer::calculateLocalIllumination(math::primitive* currentObj, const math::vec3& hitPoint) const {
+    lightIntensity result;
+    math::vec3 normal = currentObj->getNormal(hitPoint);
+
+    for (auto light : lights) {
+        result = result + light->getAmbient(currentObj);
+
+        math::vec3 bias = normal * 0.001f;
+        math::ray shadow_ray = light->genShadowRay(hitPoint + bias);
+
+        bool in_shadow = false;
+
+        for (auto obj : primitives) {
+            if (obj == currentObj) continue;
+
+            math::vec3* hit = obj->intersection(shadow_ray);
+            if (hit) {
+                in_shadow = true;
+                delete hit;
+                break;
+            }
+            delete hit;
+        }
+
+        if (!in_shadow) {
+            result = result + light->getDiffuse(currentObj, hitPoint);
+            result = result + light->getSpecular(currentObj, hitPoint, camera);
+        }
+    }
+
+    return result;
+}
+
+Image Renderer::render(int width, int height) {
+    Image image(width, height);
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_real_distribution<float> dist(-0.01f, 0.01f);
+
+    for (int y = 0; y < height; ++y) {
+        for (int x = 0; x < width; ++x) {
+            lightIntensity color;
+
+            for (int s = 0; s < aliasingSamples; ++s) {
+                float jitterX = dist(gen);
+                float jitterY = dist(gen);
+
+                math::ray ray = camera->fireRay(
+                    x + jitterX,
+                    y + jitterY,
+                    width,
+                    height
+                );
+
+                color = color + trace(ray, 5);
+            }
+
+            color = color / aliasingSamples;
+            image.setPixel(x, y, color);
+        }
+    }
+
+    if (dynamic_cast<OrthographicCam*>(camera)) {
+        image.save("orthographic.ppm");
+        cout << "Image saved as orthographic.ppm" << endl;
+    } else if (dynamic_cast<PerspectiveCam*>(camera)) {
+        image.save("perspective.ppm");
+        cout << "Image saved as perspective.ppm" << endl;
+    } else {
+        cout << "Problem with the camera" << endl;
+    }
+
     return image;
 }

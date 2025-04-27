@@ -161,35 +161,45 @@ int main() {
         lightIntensity(1.0, 0.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         10,
-        0.0
+        0.0,
+        1.0,
+        false
         );
 
     Material sphere2Mat (lightIntensity(0, 0, 0.01),
         lightIntensity(0.0, 0.0, 1.0),
         lightIntensity(1.0, 1.0, 1.0),
         5,
-        0.0
+        0.0,
+        1.0,
+        false
         );
 
     Material planeMat (lightIntensity(0, 0.01, 0),
         lightIntensity(0.0, 1.0, 0.0),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0
+        0.0,
+        1.0,
+        false
         );
 
     Material rightWall (lightIntensity(0, 0.01, 0.01),
         lightIntensity(0.0, 0.3, 0.3),
-        lightIntensity(0.7, 0.7, 0.7),
+        lightIntensity(0.7, 1.0, 0.7),
         50,
-        0.0
+        0.0,
+        1.0,
+        false
         );
 
     Material backWall (lightIntensity(0.01, 0.01, 0),
         lightIntensity(0.3, 0.5, 0.7),
         lightIntensity(0.7, 0.7, 0.7),
         50,
-        0.0
+        0.0,
+        1.0,
+        false
         );
 
     Material glassMat(
@@ -197,7 +207,7 @@ int main() {
         lightIntensity(0.2f, 0.2f, 0.2f),
         lightIntensity(1.0f, 1.0f, 1.0f),
         128.0,
-        0.3,
+        0.1,
         1.5,
         true
 
@@ -219,16 +229,16 @@ int main() {
     lightIntensity bgColor(0.1,0.1,0.1);
 
     DirectionalLight light1(lightIntensity(0.7,0.7,0.7), vec3(-0.2,-0.5,-0.5));
-    PointLight pointLight(lightIntensity(1.7, 3, 1.4), vec3(5, 5, -5));
+    PointLight pointLight(lightIntensity(3.0, 3.0, 3.0), vec3(3, 6, -3));
 
 
 
     vector<primitive*> primitives;
     vector<Light*> lights;
     primitives.push_back(&s1);
-    lights.push_back(&light1);
-    //lights.push_back(&pointLight);
-    Renderer renderer(&OrthoCam,lights, primitives, &bgColor, 20);
+    //lights.push_back(&light1);
+    lights.push_back(&pointLight);
+    Renderer renderer(&OrthoCam, lights, primitives, &bgColor, 20);
 
     renderer.render(300, 300);
 
@@ -241,33 +251,52 @@ int main() {
         1000.0f,
         90.0f);
 
-    vec3 sphere2Center = vec3(-2, 0, -10);
+    vec3 sphere2Center = vec3(-3, 0, -10);
     sphere s2(sphere2Center, 2.0f, glassMat);
-    vec3 sphere3Center = vec3(0, 3, -8);
+    vec3 sphere3Center = vec3(-1, 3, -8);
     sphere s3(sphere3Center, 1.5f, mirrorMat);
+
+    vec3 sphere4Center = vec3(3, 0, -10);
+    sphere s4(sphere4Center, 2.0f, sphere1Mat);
+    vec3 sphere5Center = vec3(3, 3, -8);
+    sphere s5(sphere5Center, 1.0f, sphere2Mat);
 
     //floor
     vec3 p1Normal(0, 1, 0); // Normal pointing up
-    vec3 p1Center(0, -4.5, 0);
+    vec3 p1Center(0, -8.5, 0);
     plane P(p1Center, p1Normal, planeMat);
 
     //right wall
     vec3 p2Normal(1,0,0);
-    vec3 p2Center(-10.5, 0, 0);
+    vec3 p2Center(-15.5, 0, 0);
     plane P2(p2Center, p2Normal, rightWall);
 
     //backwall
     vec3 p3Normal(0,0,1);
-    vec3 p3Center(0, 0, -28);
+    vec3 p3Center(0, 0, -14);
     plane P3(p3Center, p3Normal, backWall);
+
+    //roof
+    vec3 p4Normal(0,-1,0);
+    vec3 p4Center(0, 15, 0);
+    plane P4(p4Center, p4Normal, backWall);
+
+    //leftwall
+    vec3 p5Normal(-1,0,0);
+    vec3 p5Center(15.5, 0, 0);
+    plane P5(p4Center, p4Normal, backWall);
 
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
-    primitivesPerspective.push_back(&P);
-    primitivesPerspective.push_back(&P2);
+    primitivesPerspective.push_back(&s4);
+    primitivesPerspective.push_back(&s5);
+    //primitivesPerspective.push_back(&P);
+    //primitivesPerspective.push_back(&P2);
     primitivesPerspective.push_back(&P3);
+    //primitivesPerspective.push_back(&P4);
+    //primitivesPerspective.push_back(&P5);
 
     Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(500, 500);

@@ -42,6 +42,9 @@ namespace display {
         lightIntensity calculateLocalIllumination(math::primitive* obj, const math::vec3& hitPoint) const;
         math::ray reflectRay(const math::ray& incident, const math::vec3& normal, const math::vec3& hitPoint) const;
         math::ray refractRay(const math::ray &incident, math::vec3 normal, float n1, float n2, const math::vec3 &hitPoint) const;
+        math::vec3 randomDirectionOnHemisphere(const math::vec3& normal) const;
+        lightIntensity pathTrace(math::ray& ray, int depth) const;
+
 
     public:
         Renderer();

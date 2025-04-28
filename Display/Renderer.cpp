@@ -183,6 +183,98 @@ Renderer::Renderer(Camera *camera, vector<lighting::Light*> lights, vector<math:
     this->aliasingSamples = aliasingSamples;
     this->lights = lights;
 }
+
+math::vec3 Renderer::randomDirectionOnHemisphere(const math::vec3 &normal) const {
+    // Random numbers
+    float r1 = static_cast<float>(rand()) / RAND_MAX;
+    float r2 = static_cast<float>(rand()) / RAND_MAX;
+
+    float r = sqrtf(r1);
+    float theta = 2.0f * M_PI * r2;
+
+    float x = r * cosf(theta);
+    float y = r * sinf(theta);
+    float z = sqrtf(1.0f - r1);  // Notice this is cosine-weighted
+
+    // Create an orthonormal basis (u, v, normal)
+    math::vec3 u;
+    if (fabs(normal.x) > fabs(normal.z))
+        u = math::vec3(-normal.y, normal.x, 0.0f).normalize();
+    else
+        u = math::vec3(0.0f, -normal.z, normal.y).normalize();
+
+    math::vec3 v = normal.crossProduct(u);
+
+    // Transform to world space
+    math::vec3 direction = (u * x) + (v * y) + (normal * z);
+    return direction.normalize();
+}
+
+lightIntensity Renderer::pathTrace(math::ray& ray, int depth) const {
+    if (depth <= 0) {
+        return *background;
+    }
+
+    // Find closest intersection
+    math::primitive* closest = nullptr;
+    math::vec3 hit_point;
+    float min_dist = INFINITY;
+
+    for (auto obj : primitives) {
+        math::vec3* hit = obj->intersection(ray);
+        if (hit) {
+            float dist = (ray.origin - *hit).lengthSquared();
+            if (dist < min_dist) {
+                min_dist = dist;
+                hit_point = *hit;
+                closest = obj;
+            }
+            delete hit;
+        }
+    }
+
+    if (!closest) {
+        return *background;
+    }
+
+    const Material& mat = closest->material;
+    math::vec3 normal = closest->getNormal(hit_point).normalize();
+
+    // Make sure normal faces the ray
+    if (normal.dotProduct(ray.direction) > 0) {
+        normal = -normal;
+    }
+
+    // Calculate direct lighting (explicit light sampling)
+    lightIntensity directLight = calculateLocalIllumination(closest, hit_point);
+
+    // Calculate indirect lighting with Russian Roulette
+    lightIntensity indirectLight(0, 0, 0);
+
+    // Russian Roulette probability based on material reflectance
+    float maxReflectance = std::max(std::max(mat.diffuse.r, mat.diffuse.g), mat.diffuse.b);
+    float survivalProbability = std::min(0.9f, std::max(0.1f, maxReflectance));
+
+
+
+    // Decide whether to continue tracing or not
+    if (static_cast<float>(rand()) / RAND_MAX < survivalProbability) {
+            math::vec3 bounce_dir = randomDirectionOnHemisphere(normal);
+            math::ray bounce_ray(hit_point + normal * 0.001f, bounce_dir);
+
+            // Cosine-weighted importance sampling
+            float cos_theta = std::max(0.0f, normal.dotProduct(bounce_dir));
+            float PDF = cos_theta / M_PI;
+        if (PDF <= 0.0001f) {
+            return directLight;
+        }
+            indirectLight = pathTrace(bounce_ray, depth - 1) * mat.diffuse * cos_theta * (1.0f / survivalProbability * PDF);
+    }
+
+    return directLight + indirectLight;
+}
+
+
 math::ray Renderer::reflectRay(const math::ray& incident, const math::vec3& normal, const math::vec3& hitPoint) const {
     float cos_theta = normal.dotProduct(incident.direction);
     math::vec3 reflected = incident.direction - normal * (2 * cos_theta);
@@ -261,20 +353,14 @@ lightIntensity Renderer::calculateLocalIllumination(math::primitive* currentObj,
         result = result + light->getAmbient(currentObj);
 
         math::vec3 bias = normal * 0.001f;
-        math::ray shadow_ray = light->genShadowRay(hitPoint + bias);
+       // math::ray shadow_ray = light->genShadowRay(hitPoint + bias);
 
         bool in_shadow = false;
 
         for (auto obj : primitives) {
             if (obj == currentObj) continue;
 
-            math::vec3* hit = obj->intersection(shadow_ray);
-            if (hit) {
-                in_shadow = true;
-                delete hit;
-                break;
-            }
-            delete hit;
+
         }
 
         if (!in_shadow) {
@@ -307,7 +393,7 @@ Image Renderer::render(int width, int height) {
                     height
                 );
 
-                color = color + trace(ray, 5);
+                color = color + pathTrace(ray, 16);
             }
 
             color = color / aliasingSamples;

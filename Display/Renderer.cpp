@@ -10,8 +10,10 @@
 #include <cmath>
 #include "PerspectiveCam.h"
 #include "OrthographicCam.h"
+#include "../Light/PointLight.h"
+#include "../Light/DirectionalLight.h"
 using namespace std;
-
+using namespace lighting;
 using namespace display;
 
 /*Renderer::Renderer() {
@@ -253,33 +255,63 @@ lightIntensity Renderer::trace(math::ray &ray, int depth) const {
     return local + reflected + refracted;
 }
 
-lightIntensity Renderer::calculateLocalIllumination(math::primitive* currentObj, const math::vec3& hitPoint) const {
+lightIntensity Renderer::calculateLocalIllumination(
+    math::primitive* currentObj,
+    const math::vec3& hitPoint
+) const {
     lightIntensity result;
-    math::vec3 normal = currentObj->getNormal(hitPoint);
+
+    // Surface normal at hit
+    math::vec3 N = currentObj->getNormal(hitPoint).normalize();
+    const float bias = 1e-4f;  // to avoid self-shadowing
 
     for (auto light : lights) {
+        // 1) Ambient always applies
         result = result + light->getAmbient(currentObj);
 
-        math::vec3 bias = normal * 0.001f;
-        math::ray shadow_ray = light->genShadowRay(hitPoint + bias);
+        // 2) Build shadow-ray & compute maxDist
+        math::ray shadowRay;
+        float maxDist = std::numeric_limits<float>::infinity();
 
-        bool in_shadow = false;
-
-        for (auto obj : primitives) {
-            if (obj == currentObj) continue;
-
-            math::vec3* hit = obj->intersection(shadow_ray);
-            if (hit) {
-                in_shadow = true;
-                delete hit;
-                break;
-            }
-            delete hit;
+        if (auto* pl = dynamic_cast<PointLight*>(light)) {
+            // For point lights, only occluders _closer_ than the light block
+            math::vec3 L = pl->position - hitPoint;
+            maxDist = L.length();
+            // genShadowRay already returns ray.origin = hitPoint + bias*N
+            // and ray.direction = normalized(L)
+            shadowRay = pl->genShadowRay(hitPoint + N * bias);
+        }
+        else if (auto* dl = dynamic_cast<DirectionalLight*>(light)) {
+            // For directional lights, treat as infinite
+            shadowRay = dl->genShadowRay(hitPoint + N * bias);
+        }
+        else {
+            // Fallback: assume infinite
+            shadowRay = light->genShadowRay(hitPoint + N * bias);
         }
 
-        if (!in_shadow) {
-            result = result + light->getDiffuse(currentObj, hitPoint);
-            result = result + light->getSpecular(currentObj, hitPoint, camera);
+        // 3) Trace occluders
+        bool inShadow = false;
+        for (auto* obj : primitives) {
+            if (obj == currentObj) continue;
+            math::vec3* ih = obj->intersection(shadowRay);
+            if (!ih) continue;
+
+            // compute distance along shadowRay to ih
+            float dist = (*ih - shadowRay.origin).length();
+            delete ih;
+
+            if (dist < maxDist) {
+                inShadow = true;
+                break;
+            }
+        }
+
+        // 4) If not in shadow, add diffuse & specular
+        if (!inShadow) {
+            result = result
+                   + light->getDiffuse(currentObj, hitPoint)
+                   + light->getSpecular(currentObj, hitPoint, camera);
         }
     }
 

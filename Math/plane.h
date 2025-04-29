@@ -10,17 +10,24 @@
 #include "primitive.h"
 
 namespace math {
+
     class plane : public primitive {
     public:
-        vec3 point;
-        vec3 normal;
+        vec3 point;    // center of your rectangle
+        vec3 normal;   // as before
+        float halfWidth, halfHeight;
 
         plane();
-        plane(vec3 &p, vec3 &n, Material &material);
+        // new ctor: give it a size
+        plane(const vec3 &p, const vec3 &n,
+              float hw, float hh,
+              const Material &mat);
+
+        plane(const plane &other);
 
         vec3* intersection(ray &ray) override;
-        vec3 getNormal(vec3 point) override;
+        vec3  getNormal(vec3 point) override;
     };
-}
 
+}
 #endif // PLANE_H

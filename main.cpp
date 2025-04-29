@@ -244,8 +244,8 @@ int main() {
 
     //perspektywiczna
     PerspectiveCam PerspCam(
-        vec3(0, 0, 0),
-        vec3(0, 0, -0.5),
+        vec3(0, 0, -1),
+        vec3(0, 0, -1.5),
         vec3(0, 1, 0),
         0.1f,
         1000.0f,
@@ -263,46 +263,48 @@ int main() {
 
     //floor
     vec3 p1Normal(0, 1, 0); // Normal pointing up
-    vec3 p1Center(0, -8.5, 0);
-    plane P(p1Center, p1Normal, planeMat);
+    vec3 p1Center(0, -10, -10);
+    plane P(p1Center, p1Normal, 10.0f, 10.0f, planeMat);
 
     //right wall
-    vec3 p2Normal(1,0,0);
-    vec3 p2Center(-15.5, 0, 0);
-    plane P2(p2Center, p2Normal, rightWall);
+    vec3 p2Normal(-1,0,0);
+    vec3 p2Center(10, 0, -10);
+    plane P2(p2Center, p2Normal, 10.0f, 10.0f, rightWall);
 
     //backwall
     vec3 p3Normal(0,0,1);
-    vec3 p3Center(0, 0, -14);
-    plane P3(p3Center, p3Normal, backWall);
+    vec3 p3Center(0, 0, -20);
+    plane P3(p3Center, p3Normal, 10.0f, 10.0f, backWall);
 
     //roof
     vec3 p4Normal(0,-1,0);
-    vec3 p4Center(0, 15, 0);
-    plane P4(p4Center, p4Normal, backWall);
+    vec3 p4Center(0, 10, -10);
+    plane P4(p4Center, p4Normal, 10.0f, 10.0f, backWall);
 
     //leftwall
-    vec3 p5Normal(-1,0,0);
-    vec3 p5Center(15.5, 0, 0);
-    plane P5(p4Center, p4Normal, backWall);
+    vec3 p5Normal(1,0,0);
+    vec3 p5Center(-10, 0, -10);
+    plane P5(p5Center, p5Normal, 10.0f, 10.0f, rightWall);
 
+    //frontwall
+    vec3 p6Normal(0,0,-1);
+    vec3 p6Center(0, 0, 0);
+    plane P6(p6Center, p6Normal, 10.0f, 10.0f, backWall);
 
     vector<primitive*> primitivesPerspective;
     primitivesPerspective.push_back(&s2);
     primitivesPerspective.push_back(&s3);
     primitivesPerspective.push_back(&s4);
     primitivesPerspective.push_back(&s5);
-    //primitivesPerspective.push_back(&P);
-    //primitivesPerspective.push_back(&P2);
+    primitivesPerspective.push_back(&P);
+    primitivesPerspective.push_back(&P2);
     primitivesPerspective.push_back(&P3);
-    //primitivesPerspective.push_back(&P4);
-    //primitivesPerspective.push_back(&P5);
+    primitivesPerspective.push_back(&P4);
+    primitivesPerspective.push_back(&P5);
+    primitivesPerspective.push_back(&P6);
+
 
     Renderer perspRenderer(&PerspCam,lights, primitivesPerspective, &bgColor, 10);
     perspRenderer.render(500, 500);
     return 0;
 }
-
-
-
-
